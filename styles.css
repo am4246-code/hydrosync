@@ -1,0 +1,533 @@
+body {
+    font-family: 'Poppins', sans-serif; /* Modern font */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #e0e6ec; /* Slightly darker, more muted background */
+    margin: 0;
+    color: #333; /* Darker text color */
+    line-height: 1.6;
+}
+
+#buffering-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #e0e6ec; /* Match body background */
+    z-index: 1000; /* Ensure it's on top */
+    /* Internal centering for its children (water-cup and loading-message) */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Add some padding around the content */
+    border-radius: 15px; /* Match other containers */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+#loading-message {
+    margin-top: 1.5rem;
+    color: #005a9c;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.water-cup {
+    width: 120px; /* Slightly larger */
+    height: 180px; /* Slightly larger */
+    border: 6px solid #a8d0ed; /* Lighter, more modern border */
+    border-top: none;
+    position: relative;
+    border-radius: 0 0 20px 20px; /* More rounded */
+    overflow: hidden; /* Ensure water stays within bounds */
+}
+
+.water {
+    background: linear-gradient(to top, #3498db, #87ceeb); /* Gradient for water */
+    width: 100%;
+    height: 0;
+    position: absolute;
+    bottom: 0;
+    animation: fill-cup 3s ease-out forwards; /* Smoother animation */
+    border-radius: 0 0 18px 18px;
+    transition: height 0.5s ease-out; /* Added for smooth water filling animation */
+}
+
+@keyframes fill-cup {
+    from {
+        height: 0;
+    }
+    to {
+        height: 100%;
+    }
+}
+
+#auth-container, #survey-container, #main-container, #personalized-message-container {
+    background-color: white;
+    padding: 2.5rem; /* Increased padding */
+    border-radius: 15px; /* More rounded corners */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Refined shadow */
+    width: 100%;
+    max-width: 400px; /* Max width for better scaling */
+    text-align: center;
+    margin: 1rem; /* Add margin for spacing on smaller screens */
+}
+
+h1 {
+    color: #005a9c; /* Dark blue for primary headings */
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    font-size: 2.2rem;
+}
+
+h2 {
+    color: #005a9c; /* Dark blue for sub-headings */
+    margin-bottom: 1.5rem; /* Increased for more spacing */
+    font-weight: 500;
+    font-size: 1.8rem;
+}
+
+input, select {
+    width: calc(100% - 20px); /* Adjust width for padding */
+    padding: 12px 10px; /* Increased padding */
+    margin: 0.7rem 0;
+    border: 1px solid #c0c0c0; /* Slightly darker, more subtle border */
+    border-radius: 8px; /* More rounded */
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #0069d9; /* Slightly darker blue on focus */
+    box-shadow: 0 0 0 3px rgba(0, 105, 217, 0.25); /* Softer, more prominent glow */
+}
+
+button {
+    width: 100%;
+    padding: 12px; /* Increased padding */
+    margin: 0.8rem 0;
+    background-color: #0a7bff; /* Slightly richer primary blue */
+    color: white;
+    border: none;
+    border-radius: 8px; /* More rounded */
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.2); /* More prominent and diffused shadow */
+}
+
+button:hover {
+    background-color: #0069d9; /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3); /* Increased shadow for more pronounced lift */
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
+    font-weight: 500; /* Added for better visibility in login/signup forms */
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* New Circular Progress Bar Styles */
+#circular-progress-container {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #f0f3f7; /* Slightly lighter background for the unfilled part */
+    position: relative;
+    margin: 2rem auto; /* Center the circular bar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.08); /* Refined inner shadow for depth */
+    overflow: hidden; /* Ensure gradient stays within bounds */
+}
+
+#circular-progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(#5bc0de 0%, #2a8dcb 0%); /* Adjusted gradient for vibrancy */
+    transition: background 0.3s ease-out; /* Smooth transition for fill */
+}
+
+#circular-progress-text {
+    position: relative; /* Relative to circular-progress-container */
+    z-index: 1; /* Above the fill */
+    background-color: white; /* To cover the center of the conic-gradient */
+    border-radius: 50%;
+    width: 170px; /* Smaller than container to show the progress ring */
+    height: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row; /* Changed to row to display content horizontally */
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #005a9c;
+}
+
+#circular-progress-text span {
+    /* Removed display: block; */
+    font-size: 1.2rem;
+    line-height: 1.2;
+}
+
+
+
+#water-icon-display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    min-height: 60px; /* More space for icons */
+    margin-top: 1.5rem;
+    gap: 10px; /* Space between icons */
+}
+
+.water-icon { /* Targeting the class script.js adds */
+    display: inline-block;
+    width: 35px; /* Slightly larger icons */
+    height: 35px;
+    fill: #5bc0de; /* Vibrant water color */
+    stroke: #2a8dcb; /* Darker border */
+    stroke-width: 2px;
+    transition: transform 0.2s;
+}
+
+.water-icon:hover {
+    transform: translateY(-3px);
+}
+
+/* New History Water Icon and Item Styles */
+.water-history-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the start */
+    gap: 8px; /* Space between icon and text */
+    background-color: #f8fbfd; /* Slightly different background for each item */
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 8px; /* Space between history items */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+    width: fit-content; /* Adjust width to content */
+    max-width: 100%; /* Prevent overflow */
+}
+
+.history-water-icon {
+    fill: #6dd5ed; /* Light blue */
+    stroke: #2193b0; /* Darker blue */
+    width: 20px; /* Smaller icon for history */
+    height: 20px;
+}
+
+.history-water-text {
+    font-size: 0.9rem;
+    color: #555;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+#congrats-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 3rem; /* More padding */
+    border-radius: 20px; /* More rounded */
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15); /* Consistent prominent shadow */
+    text-align: center;
+    z-index: 1000; /* Ensure it's on top */
+    color: #005a9c;
+    font-size: 1.3rem;
+    animation: fadeInScale 0.3s ease-out forwards;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* New Weekly Progress Graph Styles */
+#weekly-progress-graph-container {
+    display: flex;
+    justify-content: space-around; /* Distribute items evenly */
+    align-items: flex-end; /* Align bars to the bottom */
+    height: 200px; /* Fixed height for the graph area */
+    padding: 10px 0;
+    margin-top: 2rem;
+    background-color: #eef2f6; /* Slightly darker background for the graph area */
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.08); /* Slightly more prominent inner shadow */
+}
+
+.graph-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Values at top, bar below */
+    align-items: center;
+    height: 100%; /* Take full height of container */
+    width: 12%; /* Allocate width for each bar (7 days) */
+    position: relative;
+}
+
+.graph-bar {
+    width: 80%; /* Width of the actual colored bar */
+    background: linear-gradient(to top, #5bc0de, #2a8dcb); /* Vibrant water gradient */
+    border-radius: 5px 5px 0 0; /* Rounded top corners */
+    transition: height 0.5s ease-out; /* Smooth transition for height changes */
+    position: relative;
+}
+
+.bar-value {
+    font-size: 0.8rem;
+    color: #555; /* Slightly lighter color */
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.bar-label {
+    font-size: 0.9rem;
+    color: #444; /* Slightly darker color */
+    margin-top: 5px;
+}
+
+/* Remove old weekly progress list styles */
+#weekly-progress-section {
+    margin-top: 3rem;
+    text-align: center; /* Center the graph */
+    border-top: none; /* No top border now */
+    padding-top: 0;
+}
+
+#weekly-progress-list { /* This ID is no longer used, but good to remove if present */
+    display: none;
+}
+
+#weekly-progress-list li { /* This ID is no longer used */
+    display: none;
+}
+
+/* Adjustments for the login/signup water icon */
+#login-water-icon {
+    fill: #5bc0de; /* Vibrant water color */
+    stroke: #2a8dcb; /* Darker border */
+    width: 60px; /* Larger icon */
+    height: 60px;
+    margin: 0 auto 2rem auto !important; /* More space below */
+}
+
+/* --- Tabbed Navigation Styles --- */
+#main-container {
+    padding: 0; /* Remove padding from main-container itself, sections will have it */
+    max-width: 600px; /* Make the main container a bit wider for tabs */
+    box-shadow: none; /* Remove shadow from main-container, tabs will handle it */
+    background-color: transparent; /* Make main-container background transparent */
+    margin-top: 2rem; /* Add some top margin to align with overall layout */
+}
+
+#main-nav-tabs {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch; /* Ensure buttons stretch to same height */
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #e5e9ec; /* Slightly lighter separator for tabs */
+    padding-bottom: 5px;
+    position: relative; /* For the logout button absolute positioning */
+}
+
+.tab-button {
+    flex-grow: 1; /* Allow buttons to grow and fill space */
+    padding: 12px 10px;
+    background-color: #e0e6ec; /* Match body background for inactive tabs */
+    color: #555; /* Slightly darker gray */
+    border: none;
+    border-bottom: 2px solid transparent; /* Highlight active tab */
+    border-radius: 8px 8px 0 0; /* Rounded top corners */
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin: 0 2px; /* Small gap between tabs */
+    box-shadow: none; /* Remove default button shadow */
+}
+
+.tab-button:hover:not(.active) {
+    background-color: #d0d6dc; /* Lighter hover state */
+    color: #333;
+}
+
+.tab-button.active {
+    background-color: white;
+    color: #007bff;
+    border-bottom: 2px solid #0a7bff; /* Active tab indicator using primary blue */
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08); /* Refined subtle shadow for active tab */
+    transform: translateY(0); /* Remove lift effect for active tab */
+    z-index: 1; /* Bring active tab to front */
+}
+
+/* Logout button specific styling within the tab nav */
+#main-nav-tabs #logout-btn {
+    width: auto; /* Allow button to size content */
+    margin-left: 10px; /* Space from last tab */
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    position: relative;
+    top: 0;
+    transform: none; /* Reset transform */
+    box-shadow: 0 2px 5px rgba(220, 53, 69, 0.2);
+    align-self: center; /* Align with other flex items */
+}
+
+#main-nav-tabs #logout-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+}
+
+.tab-content {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Match general container shadow */
+    display: none; /* Hidden by default */
+    text-align: center;
+    margin-top: -1.5rem; /* Overlap with tabs slightly for seamless look */
+    padding-top: 3rem; /* Compensate for overlap */
+    position: relative;
+    z-index: 0;
+}
+
+.tab-content.active {
+    display: block; /* Show active content */
+}
+
+/* Adjustments for content within tabs */
+#main-tracker h1, #goal-settings h1, #weekly-stats h1 {
+    margin-top: 0; /* Remove top margin from first element in tab */
+}
+
+/* Specific styling for the Logout button (original global rule, keep for others) */
+button#logout-btn {
+    background-color: #dc3545; /* Red for logout */
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
+}
+
+button#logout-btn:hover {
+    background-color: #c82333;
+    box-shadow: 0 6px 15px rgba(220, 53, 69, 0.3);
+}
+
+/* Specific styling for the Delete Account button */
+button#delete-account-btn {
+    background-color: #f44336; /* A more intense red for deletion */
+    box-shadow: 0 4px 10px rgba(244, 67, 54, 0.2);
+}
+
+button#delete-account-btn:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+    box-shadow: 0 6px 15px rgba(244, 67, 54, 0.3);
+}
+
+/* Adjustments for the login/signup water icon */
+#login-water-icon, #signup-water-icon {
+    fill: #5bc0de; /* Vibrant water color for consistency */
+    stroke: #2a8dcb; /* Darker border for consistency */
+    width: 60px; /* Larger icon */
+    height: 60px;
+    margin: 0 auto 2rem auto !important; /* More space below */
+}
+
+/* Notification Toggle Switch Styles (Checkmark) */
+.setting-item {
+    margin-top: 20px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 45px; /* Width of the checkmark box */
+    height: 25px; /* Height of the checkmark box */
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider (now a checkmark box) */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc; /* Unchecked background */
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 5px; /* Slightly rounded corners for the box */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem; /* For the checkmark symbol */
+    color: transparent; /* Hide checkmark initially */
+    font-weight: bold;
+}
+
+.slider.round {
+    border-radius: 5px; /* Matches overall box */
+}
+
+/* When checked, change background color */
+input:checked + .slider {
+    background-color: #007bff; /* Checked background */
+}
+
+/* Show checkmark when checked */
+input:checked + .slider::after {
+    content: "\2713"; /* Checkmark symbol (✓) */
+    color: white;
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Checkmark dot/content */
+.slider::after {
+    content: ""; /* Empty content for unchecked state */
+    position: absolute;
+    opacity: 0; /* Hide checkmark initially */
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+    transition: opacity 0.4s, transform 0.4s;
+    line-height: 1; /* Adjust line height for checkmark centering */
+}
