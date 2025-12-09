@@ -531,3 +531,58 @@ input:checked + .slider::after {
     transition: opacity 0.4s, transform 0.4s;
     line-height: 1; /* Adjust line height for checkmark centering */
 }
+
+/* New Auth Page Layout Styles */
+#auth-container {
+    max-width: 900px; /* Wider container for two-column layout */
+    padding: 0; /* Remove padding from the container itself */
+    overflow: hidden; /* Hide overflow from rounded corners */
+}
+
+.auth-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 600px; /* Taller auth screen */
+}
+
+.auth-image-section {
+    width: 50%;
+    background: linear-gradient(to right, #2193b0, #6dd5ed); /* Blue gradient */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 2rem;
+}
+
+.auth-image-content h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.auth-image-content p {
+    font-size: 1.2rem;
+    color: white;
+}
+
+.auth-form-section {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: white;
+}
+
+#login-form, #signup-form {
+    width: 100%;
+    max-width: 350px;
+}
+
+#login-form h2, #signup-form h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}

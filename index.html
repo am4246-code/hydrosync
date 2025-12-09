@@ -16,28 +16,33 @@
     </div>
 
     <div id="auth-container">
-        <div id="login-screen">
-            <svg id="login-water-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet" style="display: block; margin: 0 auto 1rem auto; fill: #007bff; stroke: #005a9c;">
-                <path d="M12 2.69L12 2.69C9.64 0.23 6.64 0.23 4.29 2.69L4.29 2.69C1.94 5.14 1.94 9.8 4.29 12.25L12 22L19.71 12.25C22.06 9.8 22.06 5.14 19.71 2.69L19.71 2.69C17.36 0.23 14.36 0.23 12 2.69Z"></path>
-            </svg>
-            <div id="login-form">
-                <h2>Login</h2>
-                <input type="email" id="login-email" placeholder="Email" autocomplete="email" required>
-                <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required>
-                <button id="login-btn">Login</button>
-                <p>Don't have an account? <a href="#" id="show-signup">Sign up</a></p>
+        <div class="auth-wrapper">
+            <div class="auth-image-section">
+                <!-- This div will have a blue background image or color -->
+                <div class="auth-image-content">
+                    <h1>Welcome to HydroSync</h1>
+                    <p>Your personal hydration tracker.</p>
+                </div>
             </div>
-        </div>
-        <div id="signup-screen" style="display: none;">
-            <svg id="signup-water-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet" style="display: block; margin: 0 auto 1rem auto; fill: #007bff; stroke: #005a9c;">
-                <path d="M12 2.69L12 2.69C9.64 0.23 6.64 0.23 4.29 2.69L4.29 2.69C1.94 5.14 1.94 9.8 4.29 12.25L12 22L19.71 12.25C22.06 9.8 22.06 5.14 19.71 2.69L19.71 2.69C17.36 0.23 14.36 0.23 12 2.69Z"></path>
-            </svg>
-            <div id="signup-form">
-                <h2>Sign Up</h2>
-                <input type="email" id="signup-email" placeholder="Email" autocomplete="email" required>
-                <input type="password" id="signup-password" placeholder="Password" autocomplete="new-password" required>
-                <button id="signup-btn">Sign Up</button>
-                <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+            <div class="auth-form-section">
+                <div id="login-screen">
+                    <div id="login-form">
+                        <h2>Login</h2>
+                        <input type="email" id="login-email" placeholder="Email" autocomplete="email" required>
+                        <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required>
+                        <button id="login-btn">Login</button>
+                        <p>Don't have an account? <a href="#" id="show-signup">Sign up</a></p>
+                    </div>
+                </div>
+                <div id="signup-screen" style="display: none;">
+                    <div id="signup-form">
+                        <h2>Sign Up</h2>
+                        <input type="email" id="signup-email" placeholder="Email" autocomplete="email" required>
+                        <input type="password" id="signup-password" placeholder="Password" autocomplete="new-password" required>
+                        <button id="signup-btn">Sign Up</button>
+                        <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
