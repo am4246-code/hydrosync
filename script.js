@@ -475,12 +475,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.error('Signup error:', error);
                 alert(`Signup failed: ${error.message}`);
             } else {
-                if (data.user && data.session) {
+                if (data.user) { // User created
                     authContainer.style.display = 'none';
-                    surveyContainer.style.display = 'block';
-                } else if (data.user && !data.session) {
-                    authContainer.style.display = 'none';
-                    surveyContainer.style.display = 'block';
+                    bufferingContainer.style.display = 'flex'; // Display buffering container
+                    setTimeout(() => {
+                        checkSessionAndRedirect();
+                    }, 1000);
                 } else {
                     alert('An unexpected error occurred during signup.');
                 }
@@ -701,21 +701,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             if (userData && userData.has_completed_survey) {
-                bufferingContainer.style.display = 'none';
-                mainContainer.style.display = 'block';
-                goalIntake = userData.daily_goal_oz || goalIntake; 
-                initializeWaterTracker(); // Call here!
-                if (isMobileDevice() && loadNotificationPreference()) {
-                    requestNotificationPermission();
-                    scheduleHourlyNotification();
-                }
+                setTimeout(() => {
+                    bufferingContainer.style.display = 'none';
+                    mainContainer.style.display = 'block';
+                    goalIntake = userData.daily_goal_oz || goalIntake; 
+                    initializeWaterTracker(); // Call here!
+                    if (isMobileDevice() && loadNotificationPreference()) {
+                        requestNotificationPermission();
+                        scheduleHourlyNotification();
+                    }
+                }, 500); // Keep buffering screen visible for 0.5 seconds
             } else {
-                bufferingContainer.style.display = 'none';
-                surveyContainer.style.display = 'block';
+                setTimeout(() => {
+                    bufferingContainer.style.display = 'none';
+                    surveyContainer.style.display = 'block';
+                }, 500); // Keep buffering screen visible for 0.5 seconds
             }
         } else {
-            bufferingContainer.style.display = 'none';
-            authContainer.style.display = 'block';
+            setTimeout(() => {
+                bufferingContainer.style.display = 'none';
+                authContainer.style.display = 'block';
+            }, 500); // Keep buffering screen visible for 0.5 seconds
         }
     }
 
