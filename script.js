@@ -21,78 +21,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const loginBtn = document.getElementById('login-btn');
     const signupBtn = document.getElementById('signup-btn');
-
+    const surveyBtn = document.getElementById('survey-btn');
     const addWaterBtn = document.getElementById('add-water-btn');
     const logoutBtn = document.getElementById('logout-btn');
     const newGoalInput = document.getElementById('new-goal-input');
     const updateGoalBtn = document.getElementById('update-goal-btn');
     const quickAddBtns = document.querySelectorAll('.quick-add-btn');
-
-    const surveyForm = document.getElementById('survey-form'); // New reference
-
-    if (surveyForm) {
-        surveyForm.addEventListener('submit', async (e) => { // Changed to submit event
-            e.preventDefault(); // Prevent default form submission
-            const name = document.getElementById('name').value;
-            const gender = document.getElementById('gender').value;
-            const age = parseInt(document.getElementById('age').value);
-            const weight = parseInt(document.getElementById('weight').value);
-            const exercise = document.getElementById('exercise').value;
-
-            if (!name || !gender || !age || !weight || !exercise) {
-                alert('Please fill out all survey fields.');
-                return;
-            }
-
-            let baseIntake = weight * 0.5;
-            if (age < 30) baseIntake += 8;
-            if (gender === 'male') baseIntake += 8;
-            switch (exercise) {
-                case 'light':
-                    baseIntake += 8;
-                    break;
-                case 'moderate':
-                    baseIntake += 16;
-                    break;
-                case 'intense':
-                    baseIntake += 24;
-                    break;
-            }
-
-            goalIntake = Math.round(baseIntake);
-            isGoalAchieved = false;
-            saveDailyData();
-
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                const { error } = await supabase
-                    .from('users')
-                    .upsert({ 
-                        id: user.id, 
-                        has_completed_survey: true, 
-                        daily_goal_oz: goalIntake,
-                        name: name
-                    }, { onConflict: 'id' });
-
-                if (error) {
-                    console.error('Error updating user survey status:', error);
-                    alert('An error occurred saving your survey data. Please try again.');
-                    return;
-                }
-            }
-
-            const personalizedMessageEl = document.getElementById('personalized-message');
-            personalizedMessageEl.textContent = `Excellent work, ${name}! Your personalized daily water intake goal is ${goalIntake} oz. Let's get hydrating!`;
-
-            surveyContainer.style.display = 'none';
-            personalizedMessageContainer.style.display = 'block';
-
-            setTimeout(() => {
-                personalizedMessageContainer.style.display = 'none';
-                checkSessionAndRedirect();
-            }, 3000);
-        });
-    }
 
     const numberOfBottlesInput = document.getElementById('number-of-bottles-input');
     const waterIconDisplay = document.getElementById('water-icon-display');
@@ -115,10 +49,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const welcomeMessageEl = document.getElementById('welcome-message');
     const todaySummaryEl = document.getElementById('today-summary');
     const waterHistoryList = document.getElementById('water-history-list');
-
-    // New history elements
-    const waterHistoryDisplay = document.getElementById('water-history-display');
-    const historyWaterIconTemplate = document.getElementById('history-water-icon-template');
 
     // Circular Progress Bar elements
     const circularProgressContainer = document.getElementById('circular-progress-container');
@@ -256,30 +186,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Function to render recent water entries
     function renderWaterHistory() {
-        waterHistoryDisplay.innerHTML = ''; // Clear the new display container
-
+        waterHistoryList.innerHTML = '';
         if (waterEntries.length === 0) {
-            const noEntryMessage = document.createElement('p'); // Use p tag for message
-            noEntryMessage.textContent = 'No water logged yet today.';
-            waterHistoryDisplay.appendChild(noEntryMessage);
+            const noEntryItem = document.createElement('li');
+            noEntryItem.textContent = 'No water logged yet today.';
+            waterHistoryList.appendChild(noEntryItem);
             return;
         }
-        const recentEntries = waterEntries.slice(-5).reverse(); // Show up to 5 recent entries
+        const recentEntries = waterEntries.slice(-5).reverse();
         recentEntries.forEach(entry => {
-            const entryDiv = document.createElement('div');
-            entryDiv.classList.add('water-history-item'); // Add a class for styling
-
-            const icon = historyWaterIconTemplate.cloneNode(true);
-            icon.style.display = 'inline-block'; // Make sure it's visible
-            icon.classList.add('history-water-icon'); // Add a class for styling
-            
-            const textSpan = document.createElement('span');
-            textSpan.textContent = `${entry.amount} oz at ${entry.timestamp}`;
-            textSpan.classList.add('history-water-text'); // Add a class for styling
-
-            entryDiv.appendChild(icon);
-            entryDiv.appendChild(textSpan);
-            waterHistoryDisplay.appendChild(entryDiv);
+            const listItem = document.createElement('li');
+            listItem.textContent = `${entry.amount} oz at ${entry.timestamp}`;
+            waterHistoryList.appendChild(listItem);
         });
     }
 
@@ -557,12 +475,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.error('Signup error:', error);
                 alert(`Signup failed: ${error.message}`);
             } else {
-                if (data.user) { // User created
+                if (data.user && data.session) {
                     authContainer.style.display = 'none';
-                    bufferingContainer.style.display = 'flex';
-                    setTimeout(() => {
-                        checkSessionAndRedirect();
-                    }, 1000);
+                    surveyContainer.style.display = 'block';
+                } else if (data.user && !data.session) {
+                    authContainer.style.display = 'none';
+                    surveyContainer.style.display = 'block';
                 } else {
                     alert('An unexpected error occurred during signup.');
                 }
@@ -573,7 +491,66 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    surveyBtn.addEventListener('click', async () => {
+        const name = document.getElementById('name').value;
+        const gender = document.getElementById('gender').value;
+        const age = parseInt(document.getElementById('age').value);
+        const weight = parseInt(document.getElementById('weight').value);
+        const exercise = document.getElementById('exercise').value;
 
+        if (!name || !gender || !age || !weight || !exercise) {
+            alert('Please fill out all survey fields.');
+            return;
+        }
+
+        let baseIntake = weight * 0.5;
+        if (age < 30) baseIntake += 8;
+        if (gender === 'male') baseIntake += 8;
+        switch (exercise) {
+            case 'light':
+                baseIntake += 8;
+                break;
+            case 'moderate':
+                baseIntake += 16;
+                break;
+            case 'intense':
+                baseIntake += 24;
+                break;
+        }
+
+        goalIntake = Math.round(baseIntake);
+        isGoalAchieved = false;
+        saveDailyData();
+
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            const { error } = await supabase
+                .from('users')
+                .upsert({ 
+                    id: user.id, 
+                    has_completed_survey: true, 
+                    daily_goal_oz: goalIntake,
+                    name: name
+                }, { onConflict: 'id' });
+
+            if (error) {
+                console.error('Error updating user survey status:', error);
+                alert('An error occurred saving your survey data. Please try again.');
+                return;
+            }
+        }
+
+        const personalizedMessageEl = document.getElementById('personalized-message');
+        personalizedMessageEl.textContent = `Hello ${name}! Your daily water intake goal is ${goalIntake} oz.`;
+
+        surveyContainer.style.display = 'none';
+        personalizedMessageContainer.style.display = 'block';
+
+        setTimeout(() => {
+            personalizedMessageContainer.style.display = 'none';
+            checkSessionAndRedirect();
+        }, 3000);
+    });
 
     numberOfBottlesInput.addEventListener('input', () => {
         const numBottles = parseInt(numberOfBottlesInput.value);
@@ -699,77 +676,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderWaterHistory();
         }
     });
-
-    const deleteAccountBtn = document.getElementById('delete-account-btn');
-    if (deleteAccountBtn) {
-        deleteAccountBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-
-            if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                return;
-            }
-
-            try {
-                const { data: { user }, error: userError } = await supabase.auth.getUser();
-                if (userError) throw userError;
-                if (!user) {
-                    alert('No user is currently logged in.');
-                    return;
-                }
-
-                // First, delete user data from the 'users' table
-                const { error: deleteDataError } = await supabase
-                    .from('users')
-                    .delete()
-                    .eq('id', user.id);
-
-                if (deleteDataError) {
-                    console.error('Error deleting user data:', deleteDataError);
-                    alert(`Failed to delete user data: ${deleteDataError.message}`);
-                    return;
-                }
-
-                // Then, delete the user from Supabase Auth
-                const { error: deleteUserError } = await supabase.rpc('delete_supabase_user');
-
-                if (deleteUserError) {
-                    // Supabase's admin.deleteUser() in a function requires specific setup/permissions
-                    // If using a client-side method, it might be supabase.auth.admin.deleteUser(user.id)
-                    // or a server-side function. For now, assume a callable rpc for simplicity.
-                    console.error('Error deleting user from auth:', deleteUserError);
-                    alert(`Failed to delete user account: ${deleteUserError.message}`);
-                    return;
-                }
-
-                alert('Your account has been successfully deleted.');
-                // Clear local storage and redirect to auth screen
-                localStorage.removeItem('waterTrackerDailyData');
-                currentIntake = 0;
-                goalIntake = 0;
-                isGoalAchieved = false;
-                waterEntries = [];
-                
-                numberOfBottlesInput.value = '';
-                waterIconDisplay.innerHTML = '';
-                
-                mainContainer.style.display = 'none';
-                surveyContainer.style.display = 'none';
-                personalizedMessageContainer.style.display = 'none';
-                authContainer.style.display = 'block';
-
-                if (notificationInterval) {
-                    clearInterval(notificationInterval);
-                }
-                renderWaterHistory(); // Clear history display
-                // Force a full page reload to ensure all session data is cleared
-                window.location.reload(); 
-
-            } catch (error) {
-                console.error('Unexpected error during account deletion:', error);
-                alert(`An unexpected error occurred during account deletion: ${error.message}`);
-            }
-        });
-    }
 
     async function checkSessionAndRedirect() {
         bufferingContainer.style.display = 'flex';
