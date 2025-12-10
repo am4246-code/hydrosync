@@ -1,0 +1,14 @@
+{
+  "name": "hydrosync-website",
+  "version": "1.0.0",
+  "description": "A simple water tracking application.",
+  "main": "script.js",
+  "scripts": {
+    "start": "serve"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "serve": "^14.0.1"
+  }
+}

@@ -1,0 +1,90 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e9ebee; /* Lighter background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Use min-height to ensure it takes full height even with less content */
+    margin: 0;
+    padding: 20px; /* Add some padding */
+}
+
+.survey-container {
+    text-align: center;
+    width: 100%; /* Take full width on smaller screens */
+    max-width: 450px; /* Max width for larger screens */
+}
+
+.survey-box {
+    background-color: #fff;
+    padding: 30px 40px; /* Adjusted padding */
+    border-radius: 10px; /* Slightly more rounded corners */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+    transition: transform 0.3s ease; /* Smooth transition on hover/focus (if applicable) */
+}
+
+.survey-box:hover {
+    transform: translateY(-3px); /* Subtle lift effect */
+}
+
+h1 {
+    font-size: 28px; /* Larger title */
+    margin-bottom: 30px; /* More space below title */
+    color: #1c1e21;
+    font-weight: 600; /* Bolder title */
+}
+
+.input-group {
+    margin-bottom: 25px; /* More space between input groups */
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px; /* More space below label */
+    font-size: 15px; /* Slightly larger label font */
+    color: #333; /* Darker label color */
+    font-weight: 500; /* Medium bold label */
+}
+
+input[type="text"],
+input[type="number"], /* Added number type */
+select {
+    width: 100%;
+    padding: 12px 15px; /* Adjusted padding */
+    border: 1px solid #cce4f7; /* Lighter, more modern border color */
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    border-color: #1877f2; /* Blue border on focus */
+    box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.2); /* Light blue glow on focus */
+    outline: none; /* Remove default outline */
+}
+
+button {
+    width: 100%;
+    padding: 14px; /* Larger button padding */
+    background-color: #28a745; /* Green for submit button */
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 17px; /* Larger font size */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+button:hover {
+    background-color: #218838; /* Darker green on hover */
+    transform: translateY(-1px); /* Subtle lift effect */
+}
+
+button:active {
+    transform: translateY(0); /* Reset on click */
+}

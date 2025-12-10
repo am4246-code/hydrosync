@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HydroSync</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="main-container">
+        <div id="main-nav-tabs">
+            <button class="tab-button active" data-tab="main-tracker">Tracker</button>
+            <button class="tab-button" data-tab="goal-settings">Goal</button>
+            <button class="tab-button" data-tab="account-settings">Account</button> <!-- New tab button -->
+        </div>
+
+        <div id="main-tracker" class="tab-content active">
+            <h1>Your Daily Water Intake</h1>
+
+
+
+            <div id="circular-progress-container">
+                <div id="circular-progress-fill"></div>
+                <div id="circular-progress-text">
+                    <span id="current-intake">0</span> / <span id="goal-intake">0</span> oz
+                </div>
+            </div>
+            <input type="number" id="number-of-bottles-input" placeholder="Number of water bottles" autocomplete="off">
+            <div id="water-icon-display">
+                <!-- Water icons will be displayed here -->
+                <svg id="water-cup-template" style="display: none;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bottle">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2m4 0V2m-4 2V2"></path>
+                </svg>
+            </div>
+            <button id="add-water-btn">Add Bottles</button>
+            <div id="quick-add-section" style="margin-top: 25px;">
+                <h2>Quick Add Water</h2>
+                <div style="display: flex; justify-content: center; gap: 10px;">
+                    <button class="quick-add-btn" data-oz="8">Add 8 oz</button>
+                    <button class="quick-add-btn" data-oz="12">Add 12 oz</button>
+                    <button class="quick-add-btn" data-oz="16">Add 16 oz</button>
+                </div>
+            </div>
+            <button id="reset-daily-btn" style="margin-top: 20px;">Reset Daily Progress</button>
+
+            <div id="recent-water-history" style="margin-top: 2rem; text-align: left;">
+                <h2>Recent Intake</h2>
+                <ul id="water-history-list"></ul>
+                <div id="water-history-display" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 0;">
+                    <!-- Recent water entries with icons will be dynamically added here -->
+                </div>
+                <!-- Template for a small water icon for history -->
+                <svg id="history-water-icon-template" style="display: none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet">
+                    <path d="M12 2.69L12 2.69C9.64 0.23 6.64 0.23 4.29 2.69L4.29 2.69C1.94 5.14 1.94 9.8 4.29 12.25L12 22L19.71 12.25C22.06 9.8 22.06 5.14 19.71 2.69L19.71 2.69C17.36 0.23 14.36 0.23 12 2.69Z"></path>
+                </svg>
+            </div>
+
+            <div id="weekly-progress-section" style="margin-top: 2rem; text-align: left;">
+                <h2>Weekly Progress</h2>
+                <p><strong>Total Weekly Intake:</strong> <span id="weekly-total-intake">0</span> oz</p>
+                <p><strong>Average Daily Intake:</strong> <span id="weekly-average-intake">0</span> oz</p>
+                <p><strong>Days Goal Met:</strong> <span id="weekly-goal-met-days">0</span> / 7</p>
+                <div id="weekly-chart" style="width: 100%; height: 100px; background-color: #f0f0f0; border-radius: 8px; margin-top: 10px;">
+                    <!-- Simple visual representation of weekly progress could go here -->
+                </div>
+            </div>
+        </div>
+
+        <div id="goal-settings" class="tab-content">
+            <div id="goal-customization-section">
+                <h1>Daily Goal Settings</h1>
+                <h2>Current Goal: <span id="goal-intake-display">0</span> oz</h2>
+                <input type="number" id="new-goal-input" placeholder="New goal (oz)" autocomplete="off">
+                <button id="update-goal-btn">Update Goal</button>
+            </div>
+        </div>
+
+        <div id="account-settings" class="tab-content">
+            <h1>Account Information</h1>
+            <div id="account-info">
+                <p><strong>Email:</strong> <span id="account-email"></span></p>
+                <p><strong>Name:</strong> <span id="account-name"></span></p>
+                <p><strong>Age:</strong> <span id="account-age"></span></p>
+                <p><strong>Weight:</strong> <span id="account-weight"></span> lbs</p>
+                <p><strong>Exercise Level:</strong> <span id="account-exercise-level"></span></p>
+                <p><strong>Recommended Daily Intake:</strong> <span id="account-recommended-intake"></span> oz</p>
+            </div>
+            <div class="account-actions">
+                <button id="delete-account-btn" class="button">Delete Account</button>
+                <button id="logout-btn" class="button">Logout</button>
+            </div>
+        </div>
+
+        <div id="congrats-popup" style="display: none;">
+            <h2>Congratulations!</h2>
+            <p>You've reached your daily water intake goal!</p>
+        </div>
+    </div>
+
+    <script src="toast.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+    <script src="script.js"></script>
+    <script src="logout.js"></script>
+    
+    <div id="recommendation-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-title">Your Daily Water Goal!</h2>
+            <p id="modal-message"></p>
+            <button id="modal-continue-btn" class="button">Continue to Tracker</button>
+        </div>
+    </div>
+    <canvas id="confetti-canvas"></canvas>
+</body>
+</html>

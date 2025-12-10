@@ -3,176 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HydroSync</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Login - HydroSync</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="toast.css">
 </head>
 <body>
-    <div id="buffering-container" style="display: none;">
-        <div class="water-cup">
-            <div class="water"></div>
-        </div>
-        <p id="loading-message">Loading...</p>
-    </div>
-
-    <div id="auth-container">
-        <div class="auth-wrapper">
-            <div class="auth-image-section">
-                <!-- This div will have a blue background image or color -->
-                <div class="auth-image-content">
-                    <h1>Welcome to HydroSync</h1>
-                    <p>Your personal hydration tracker.</p>
-                </div>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <img src="https://www.shutterstock.com/image-vector/drinking-water-glass-3d-vector-600nw-2634592707.jpg" alt="Water Droplet Icon" class="water-droplet-icon">
+                <h1>Login</h1>
             </div>
-            <div class="auth-form-section">
-                <div id="login-screen">
-                    <div id="login-form">
-                        <h2>Login</h2>
-                        <input type="email" id="login-email" placeholder="Email" autocomplete="email" required>
-                        <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required>
-                        <button id="login-btn">Login</button>
-                        <p>Don't have an account? <a href="#" id="show-signup">Sign up</a></p>
-                    </div>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
                 </div>
-                <div id="signup-screen" style="display: none;">
-                    <div id="signup-form">
-                        <h2>Sign Up</h2>
-                        <input type="email" id="signup-email" placeholder="Email" autocomplete="email" required>
-                        <input type="password" id="signup-password" placeholder="Password" autocomplete="new-password" required>
-                        <button id="signup-btn">Sign Up</button>
-                        <p>Already have an account? <a href="#" id="show-login">Login</a></p>
-                    </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
                 </div>
-            </div>
+                <button type="submit">Login</button>
+            </form>
+            <p class="signup-link">Don't have an account? <a href="signup.html">Sign up</a></p>
         </div>
     </div>
-
-    <div id="survey-container" style="display: none;">
-        <h2>Tell us about yourself</h2>
-        <p>To personalize your water intake goals, please tell us a little more about you.</p>
-        <form id="survey-form">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" placeholder="Your Name" autocomplete="name" required>
-            
-            <label for="gender">Gender</label>
-            <select id="gender" name="gender" autocomplete="sex" required>
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-            </select>
-            
-            <label for="age">Age</label>
-            <input type="number" id="age" name="age" placeholder="Your Age" autocomplete="age" required>
-            
-            <label for="weight">Weight (lbs)</label>
-            <input type="number" id="weight" name="weight" placeholder="Your Weight in lbs" autocomplete="off" required>
-            
-            <label for="exercise">Exercise Level</label>
-            <select id="exercise" name="exercise" autocomplete="off" required>
-                <option value="">Select Exercise Level</option>
-                <option value="light">Light</option>
-                <option value="moderate">Moderate</option>
-                <option value="intense">Intense</option>
-            </select>
-            <button id="survey-btn" type="submit">Continue</button>
-        </form>
-    </div>
-
-    <div id="personalized-message-container" style="display: none;">
-        <p id="personalized-message"></p>
-    </div>
-
-    <div id="main-container" style="display: none;">
-        <div id="main-nav-tabs">
-            <button class="tab-button active" data-tab="main-tracker">Tracker</button>
-            <button class="tab-button" data-tab="goal-settings">Goal</button>
-            <button class="tab-button" data-tab="weekly-stats">Weekly</button>
-            <button class="tab-button" data-tab="account-settings">Account</button>
-        </div>
-
-        <div id="main-tracker" class="tab-content active">
-            <h1>Your Daily Water Intake</h1>
-            <p id="welcome-message"></p>
-            <p id="today-summary" style="font-weight: 500; margin-bottom: 1.5rem;"></p>
-
-            <div id="circular-progress-container">
-                <div id="circular-progress-fill"></div>
-                <div id="circular-progress-text">
-                    <span id="current-intake">0</span> / <span id="goal-intake">0</span> oz
-                </div>
-            </div>
-            <input type="number" id="number-of-bottles-input" placeholder="Number of water bottles" autocomplete="off">
-            <div id="water-icon-display">
-                <!-- Water icons will be displayed here -->
-                <svg id="water-cup-template" style="display: none;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bottle">
-                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2m4 0V2m-4 2V2"></path>
-                </svg>
-            </div>
-            <button id="add-water-btn">Add Bottles</button>
-            <div id="quick-add-section" style="margin-top: 25px;">
-                <h2>Quick Add Water</h2>
-                <div style="display: flex; justify-content: center; gap: 10px;">
-                    <button class="quick-add-btn" data-oz="8">Add 8 oz</button>
-                    <button class="quick-add-btn" data-oz="12">Add 12 oz</button>
-                    <button class="quick-add-btn" data-oz="16">Add 16 oz</button>
-                </div>
-            </div>
-            <button id="reset-daily-btn" style="margin-top: 20px;">Reset Daily Progress</button>
-
-            <div id="recent-water-history" style="margin-top: 2rem; text-align: left;">
-                <h2>Recent Intake</h2>
-                <div id="water-history-display" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 0;">
-                    <!-- Recent water entries with icons will be dynamically added here -->
-                </div>
-                <!-- Template for a small water icon for history -->
-                <svg id="history-water-icon-template" style="display: none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-droplet">
-                    <path d="M12 2.69L12 2.69C9.64 0.23 6.64 0.23 4.29 2.69L4.29 2.69C1.94 5.14 1.94 9.8 4.29 12.25L12 22L19.71 12.25C22.06 9.8 22.06 5.14 19.71 2.69L19.71 2.69C17.36 0.23 14.36 0.23 12 2.69Z"></path>
-                </svg>
-            </div>
-        </div>
-
-        <div id="goal-settings" class="tab-content">
-            <div id="goal-customization-section">
-                <h1>Daily Goal Settings</h1>
-                <h2>Current Goal: <span id="goal-intake-display">0</span> oz</h2>
-                <input type="number" id="new-goal-input" placeholder="New goal (oz)" autocomplete="off">
-                <button id="update-goal-btn">Update Goal</button>
-            </div>
-        </div>
-
-        <div id="weekly-stats" class="tab-content">
-            <div id="weekly-progress-section">
-                <h1>Weekly Progress</h1>
-                <div id="weekly-progress-graph-container">
-                    <!-- Graph bars will be dynamically added here -->
-                </div>
-            </div>
-        </div>
-
-        <div id="account-settings" class="tab-content">
-            <h1>Account Settings</h1>
-            <p>Email: <span id="account-email">user@example.com</span></p>
-            <p>User ID: <span id="account-user-id">uuid-123-abc</span></p>
-            
-            <div class="setting-item" style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
-                <label for="notification-toggle">Enable Hourly Reminders</label>
-                <label class="switch">
-                    <input type="checkbox" id="notification-toggle">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-
-            <button id="logout-btn" style="background-color: #dc3545; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">Logout</button>
-            <button id="delete-account-btn" style="background-color: #f44336; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px;">Delete Account</button>
-        </div>
-
-        <div id="congrats-popup" style="display: none;">
-            <h2>Congratulations!</h2>
-            <p>You've reached your daily water intake goal!</p>
-        </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="script.js"></script>
+    <script src="login.js"></script>
+    <script src="toast.js"></script>
 </body>
 </html>
