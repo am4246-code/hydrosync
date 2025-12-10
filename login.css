@@ -27,6 +27,14 @@ body {
     margin-bottom: 20px;
 }
 
+.website-name {
+    font-size: 32px;
+    font-weight: bold;
+    color: #2196F3;
+    margin-bottom: 8px;
+    margin-top: 0;
+}
+
 .water-droplet-icon {
     width: 48px; /* Set explicit width for the image */
     height: 48px; /* Set explicit height for the image */
