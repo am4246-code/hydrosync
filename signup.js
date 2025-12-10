@@ -30,6 +30,7 @@ document.getElementById('signup-form').addEventListener('submit', function(event
     localStorage.setItem('users', JSON.stringify(users));
 
     console.log('Signing up with:', { email, password });
+    sessionStorage.setItem('loggedInUserEmail', email);
     
     const signupButton = event.target.querySelector('button');
     signupButton.disabled = true;

@@ -1,22 +1,8 @@
-.button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #1877f2;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.button:hover {
-    background-color: #166fe5;
-}
-
+/* General Body and Font Styles */
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
+    background-color: #F9FAFB;
+    color: #1F2937;
     margin: 0;
     padding: 20px;
     display: flex;
@@ -25,37 +11,37 @@ body {
     min-height: 100vh;
 }
 
-#main-container, #personalized-message-container {
-    background-color: white;
-    padding: 2.5rem; /* Increased padding */
-    border-radius: 15px; /* More rounded corners */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Refined shadow */
+/* Main Container for Tabs */
+#main-container {
+    background-color: transparent;
     width: 100%;
-    max-width: 400px; /* Max width for better scaling */
-    text-align: center;
-    margin: 1rem; /* Add margin for spacing on smaller screens */
+    max-width: 600px;
+    padding: 0;
+    margin-top: 2rem;
 }
 
+/* Headings */
 h1 {
-    color: #005a9c; /* Dark blue for primary headings */
+    color: #1E40AF; /* Deeper Blue for Headings */
     margin-bottom: 1.5rem;
     font-weight: 600;
-    font-size: 2.2rem;
+    font-size: 2rem;
 }
 
 h2 {
-    color: #005a9c; /* Dark blue for sub-headings */
-    margin-bottom: 1.5rem; /* Increased for more spacing */
+    color: #1E3A8A; /* Slightly lighter deep blue */
+    margin-bottom: 1.5rem;
     font-weight: 500;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
+/* Input Fields */
 input, select {
-    width: calc(100% - 20px); /* Adjust width for padding */
-    padding: 12px 10px; /* Increased padding */
+    width: calc(100% - 24px);
+    padding: 12px;
     margin: 0.7rem 0;
-    border: 1px solid #c0c0c0; /* Slightly darker, more subtle border */
-    border-radius: 8px; /* More rounded */
+    border: 1px solid #D1D5DB; /* Lighter Gray Border */
+    border-radius: 8px;
     box-sizing: border-box;
     font-size: 1rem;
     transition: border-color 0.3s, box-shadow 0.3s;
@@ -63,56 +49,108 @@ input, select {
 
 input:focus, select:focus {
     outline: none;
-    border-color: #0069d9; /* Slightly darker blue on focus */
-    box-shadow: 0 0 0 3px rgba(0, 105, 217, 0.25); /* Softer, more prominent glow */
+    border-color: #3B82F6; /* Primary Blue on Focus */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
-button {
+/* Buttons */
+button, .button {
     width: 100%;
-    padding: 12px; /* Increased padding */
+    padding: 12px;
     margin: 0.8rem 0;
-    background-color: #0a7bff; /* Slightly richer primary blue */
+    background-color: #3B82F6; /* Primary Blue */
     color: white;
     border: none;
-    border-radius: 8px; /* More rounded */
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 500;
     transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.2); /* More prominent and diffused shadow */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
 
-button:hover {
-    background-color: #0069d9; /* Darker blue on hover */
-    transform: translateY(-2px); /* Slight lift effect */
-    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3); /* Increased shadow for more pronounced lift */
+button:hover, .button:hover {
+    background-color: #2563EB; /* Darker Blue on Hover */
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
+/* Links */
 a {
-    color: #007bff;
+    color: #3B82F6;
     text-decoration: none;
     transition: color 0.3s;
-    font-weight: 500; /* Added for better visibility in login/signup forms */
 }
 
 a:hover {
-    color: #0056b3;
+    color: #2563EB;
     text-decoration: underline;
 }
 
-/* New Circular Progress Bar Styles */
+/* Tab Navigation */
+#main-nav-tabs {
+    display: flex;
+    border-bottom: 1px solid #E5E7EB; /* Lighter Border */
+    margin-bottom: -1px; /* Overlap with content */
+}
+
+.tab-button {
+    flex-grow: 1;
+    padding: 14px 10px;
+    background-color: transparent;
+    color: #6B7280; /* Medium Gray for inactive tabs */
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+.tab-button:hover:not(.active) {
+    color: #1F2937;
+    background-color: #F3F4F6; /* Light gray on hover */
+}
+
+.tab-button.active {
+    color: #3B82F6; /* Primary blue for active tab */
+    border-bottom: 2px solid #3B82F6;
+    background-color: white;
+    transform: none;
+}
+
+/* Tab Content Area */
+.tab-content {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 0 0 15px 15px; /* Rounded bottom corners */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    display: none;
+    text-align: center;
+    position: relative;
+    z-index: 0;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Circular Progress Bar */
 #circular-progress-container {
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    background: #f0f3f7; /* Slightly lighter background for the unfilled part */
+    background: #E5E7EB; /* Light Gray Background */
     position: relative;
-    margin: 2rem auto; /* Center the circular bar */
+    margin: 2rem auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.08); /* Refined inner shadow for depth */
-    overflow: hidden; /* Ensure gradient stays within bounds */
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    overflow: hidden;
 }
 
 #circular-progress-fill {
@@ -122,98 +160,91 @@ a:hover {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background: conic-gradient(#5bc0de 0%, #2a8dcb 0%); /* Adjusted gradient for vibrancy */
-    transition: background 0.3s ease-out; /* Smooth transition for fill */
+    background: conic-gradient(#60A5FA 0%, #3B82F6 0%);
+    transition: background 0.3s ease-out;
 }
 
 #circular-progress-text {
-    position: relative; /* Relative to circular-progress-container */
-    z-index: 1; /* Above the fill */
-    background-color: white; /* To cover the center of the conic-gradient */
+    position: relative;
+    z-index: 1;
+    background-color: white;
     border-radius: 50%;
-    width: 170px; /* Smaller than container to show the progress ring */
+    width: 170px;
     height: 170px;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: row; /* Changed to row to display content horizontally */
+    flex-direction: row;
     font-size: 1.4rem;
     font-weight: 600;
-    color: #005a9c;
+    color: #1E40AF;
 }
 
 #circular-progress-text span {
-    /* Removed display: block; */
     font-size: 1.2rem;
     line-height: 1.2;
 }
 
 
-
+/* Water Icons */
 #water-icon-display {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    min-height: 60px; /* More space for icons */
+    min-height: 50px;
     margin-top: 1.5rem;
-    gap: 10px; /* Space between icons */
+    gap: 8px;
 }
 
-.water-icon { /* Targeting the class script.js adds */
-    display: inline-block;
-    width: 35px; /* Slightly larger icons */
-    height: 35px;
-    fill: #5bc0de; /* Vibrant water color */
-    stroke: #2a8dcb; /* Darker border */
-    stroke-width: 2px;
+.water-icon {
+    width: 30px;
+    height: 30px;
+    fill: #60A5FA;
+    stroke: #3B82F6;
+    stroke-width: 1.5px;
     transition: transform 0.2s;
 }
 
-.water-icon:hover {
-    transform: translateY(-3px);
-}
-
-/* New History Water Icon and Item Styles */
+/* History List */
 .water-history-item {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* Align items to the start */
-    gap: 8px; /* Space between icon and text */
-    background-color: #f8fbfd; /* Slightly different background for each item */
+    gap: 8px;
+    background-color: #F9FAFB;
     border-radius: 8px;
     padding: 8px 12px;
-    margin-bottom: 8px; /* Space between history items */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
-    width: fit-content; /* Adjust width to content */
-    max-width: 100%; /* Prevent overflow */
+    margin-bottom: 8px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    width: fit-content;
+    max-width: 100%;
 }
 
 .history-water-icon {
-    fill: #6dd5ed; /* Light blue */
-    stroke: #2193b0; /* Darker blue */
-    width: 20px; /* Smaller icon for history */
-    height: 20px;
+    fill: #93C5FD; /* Lighter blue */
+    stroke: #60A5FA;
+    width: 18px;
+    height: 18px;
 }
 
 .history-water-text {
     font-size: 0.9rem;
-    color: #555;
-    white-space: nowrap; /* Prevent text wrapping */
+    color: #4B5563;
 }
 
+/* Congrats Popup */
 #congrats-popup {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    padding: 3rem; /* More padding */
-    border-radius: 20px; /* More rounded */
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15); /* Consistent prominent shadow */
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     text-align: center;
-    z-index: 1000; /* Ensure it's on top */
-    color: #005a9c;
+    z-index: 1000;
+    color: #1E40AF;
     font-size: 1.3rem;
     animation: fadeInScale 0.3s ease-out forwards;
 }
@@ -221,7 +252,7 @@ a:hover {
 @keyframes fadeInScale {
     from {
         opacity: 0;
-        transform: translate(-50%, -50%) scale(0.8);
+        transform: translate(-50%, -50%) scale(0.9);
     }
     to {
         opacity: 1;
@@ -229,99 +260,26 @@ a:hover {
     }
 }
 
-/* --- Tabbed Navigation Styles --- */
-#main-container {
-    padding: 0; /* Remove padding from main-container itself, sections will have it */
-    max-width: 600px; /* Make the main container a bit wider for tabs */
-    box-shadow: none; /* Remove shadow from main-container, tabs will handle it */
-    background-color: transparent; /* Make main-container background transparent */
-    margin-top: 2rem; /* Add some top margin to align with overall layout */
-}
-
-#main-nav-tabs {
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch; /* Ensure buttons stretch to same height */
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid #e5e9ec; /* Slightly lighter separator for tabs */
-    padding-bottom: 5px;
-    position: relative; /* For the logout button absolute positioning */
-}
-
-.tab-button {
-    flex-grow: 1; /* Allow buttons to grow and fill space */
-    padding: 12px 10px;
-    background-color: #e0e6ec; /* Match body background for inactive tabs */
-    color: #555; /* Slightly darker gray */
-    border: none;
-    border-bottom: 2px solid transparent; /* Highlight active tab */
-    border-radius: 8px 8px 0 0; /* Rounded top corners */
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    margin: 0 2px; /* Small gap between tabs */
-    box-shadow: none; /* Remove default button shadow */
-}
-
-.tab-button:hover:not(.active) {
-    background-color: #d0d6dc; /* Lighter hover state */
-    color: #333;
-}
-
-.tab-button.active {
-    background-color: white;
-    color: #007bff;
-    border-bottom: 2px solid #0a7bff; /* Active tab indicator using primary blue */
-    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08); /* Refined subtle shadow for active tab */
-    transform: translateY(0); /* Remove lift effect for active tab */
-    z-index: 1; /* Bring active tab to front */
-}
-
-.tab-content {
-    background-color: white;
-    padding: 2.5rem;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Match general container shadow */
-    display: none; /* Hidden by default */
-    text-align: center;
-    margin-top: -1.5rem; /* Overlap with tabs slightly for seamless look */
-    padding-top: 3rem; /* Compensate for overlap */
-    position: relative;
-    z-index: 0;
-}
-
-.tab-content.active {
-    display: block; /* Show active content */
-}
-
-/* Adjustments for content within tabs */
-#main-tracker h1, #goal-settings h1 {
-    margin-top: 0; /* Remove top margin from first element in tab */
-}
-
 /* Modal Styles */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1001; /* Sit on top */
+    display: none;
+    position: fixed;
+    z-index: 1001;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    display: flex; /* Use flexbox to center content */
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: auto; /* Auto margin with flexbox centers it */
+    background-color: white;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     position: relative;
     width: 80%;
     max-width: 500px;
@@ -329,13 +287,8 @@ a:hover {
     animation: fadeIn 0.3s ease-out;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
 .close-button {
-    color: #aaa;
+    color: #9CA3AF;
     position: absolute;
     top: 10px;
     right: 20px;
@@ -344,113 +297,83 @@ a:hover {
     cursor: pointer;
 }
 
-.close-button:hover,
-.close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+.close-button:hover {
+    color: #1F2937;
 }
 
 #modal-title {
-    color: #005a9c;
-    font-size: 28px;
+    color: #1E40AF;
+    font-size: 24px;
     margin-bottom: 15px;
 }
 
 #modal-message {
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.5;
-    color: #333;
+    color: #374151;
     margin-bottom: 20px;
 }
 
 #modal-continue-btn {
-    padding: 12px 25px;
-    font-size: 16px;
-    background-color: #28a745; /* Green for continue */
+    background-color: #10B981; /* Green */
 }
 
 #modal-continue-btn:hover {
-    background-color: #218838;
+    background-color: #059669;
 }
 
-/* New styles for Account tab */
+/* Account Settings */
 #account-settings {
-    text-align: left; /* Align text to the left for readability */
-}
-
-#account-settings h1 {
-    margin-bottom: 25px;
-    font-size: 2.5rem;
-    color: #005a9c;
-    text-align: center;
+    text-align: left;
 }
 
 #account-info p {
     margin-bottom: 15px;
-    font-size: 1.1rem;
-    color: #333;
-    line-height: 1.6;
+    font-size: 1rem;
+    color: #374151;
 }
 
 #account-info p strong {
-    color: #005a9c; /* Make labels stand out */
-    min-width: 150px; /* Align labels */
+    color: #1F2937;
+    min-width: 150px;
     display: inline-block;
 }
 
 .account-actions {
     margin-top: 30px;
     display: flex;
-    flex-direction: column; /* Stack buttons vertically */
-    gap: 15px; /* Space between buttons */
+    flex-direction: column;
+    gap: 15px;
 }
 
-.account-actions button {
-    width: 100%;
-    padding: 12px;
-    font-size: 1.1rem;
-    font-weight: 500;
-    border-radius: 8px;
-    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-}
-
-/* Specific styling for Delete Account button */
 #delete-account-btn {
-    background-color: #dc3545; /* Red for destructive action */
-    box-shadow: 0 6px 15px rgba(220, 53, 69, 0.2);
+    background-color: #EF4444; /* Red */
 }
 
 #delete-account-btn:hover {
-    background-color: #c82333;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+    background-color: #DC2626;
 }
 
-/* Specific styling for Logout button */
 #logout-btn {
-    background-color: #6c757d; /* Gray for secondary action */
-    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.2);
+    background-color: #6B7280; /* Gray */
 }
 
 #logout-btn:hover {
-    background-color: #5a6268;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+    background-color: #4B5563;
 }
 
-/* New styles for Weekly Chart */
+/* Weekly Chart */
 #weekly-chart {
     display: flex;
     justify-content: space-around;
-    align-items: flex-end; /* Bars start from the bottom */
+    align-items: flex-end;
     width: 100%;
     height: 100px;
-    background-color: #f0f3f7; /* Light background for the chart area */
+    background-color: #F3F4F6;
     border-radius: 8px;
     margin-top: 15px;
     padding: 5px;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05); /* Subtle inner shadow */
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 }
 
 .weekly-bar-container {
@@ -459,53 +382,33 @@ a:hover {
     align-items: center;
     justify-content: flex-end;
     height: 100%;
-    width: 12%; /* Roughly 7 bars with some spacing */
+    width: 12%;
     position: relative;
 }
 
 .weekly-bar {
     width: 80%;
-    background-color: #6dd5ed; /* Water color */
-    border-radius: 3px 3px 0 0; /* Rounded top corners */
-    transition: height 0.5s ease-out; /* Smooth animation for bar height */
-    position: relative;
-    box-shadow: 0 -2px 5px rgba(0, 170, 255, 0.3); /* Glow effect */
+    background-color: #60A5FA;
+    border-radius: 3px 3px 0 0;
+    transition: height 0.5s ease-out;
 }
 
 .weekly-bar-label {
     font-size: 0.75rem;
-    color: #555;
+    color: #6B7280;
     margin-top: 3px;
     position: absolute;
-    bottom: -18px; /* Position label below the bar */
-    white-space: nowrap; /* Prevent label from wrapping */
+    bottom: -18px;
+    white-space: nowrap;
 }
 
-.weekly-bar-value {
-    font-size: 0.7em;
-    color: #fff;
-    position: absolute;
-    top: -15px; /* Position value above the bar */
-    width: 100%;
-    text-align: center;
-    background-color: rgba(0,0,0,0.3);
-    border-radius: 3px;
-    padding: 2px 0;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.weekly-bar-container:hover .weekly-bar-value {
-    opacity: 1;
-}
-
-/* Confetti Canvas Styles */
+/* Confetti Canvas */
 #confetti-canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 999; /* Below modals, above other content */
-    pointer-events: none; /* Allows clicks to pass through */
+    z-index: 999;
+    pointer-events: none;
 }
