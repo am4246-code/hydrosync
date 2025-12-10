@@ -1,0 +1,47 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4FC3F7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1976D2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="waterGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#81D4FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1976D2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="bottleGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#E3F2FD;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#81D4FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1976D2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded square background -->
+  <rect width="32" height="32" rx="6" ry="6" fill="url(#bgGradient)"/>
+  
+  <!-- Person silhouette - head and shoulders (white) -->
+  <path d="M 20 8 Q 20 6 18 6 Q 16 6 16 8 Q 16 7 15 7 Q 14 7 14 8 L 14 10 Q 14 11 15 11 L 17 11 Q 18 11 18 10 L 18 9 Q 19 9 19.5 9.5 Q 20 10 20 8 Z" fill="white"/>
+  
+  <!-- Ponytail -->
+  <ellipse cx="15" cy="8" rx="1.5" ry="2" fill="white"/>
+  
+  <!-- Torso filled with water (blue gradient) -->
+  <path d="M 14 11 L 14 22 Q 14 23 15 23 L 17 23 Q 18 23 18 22 L 18 11 Q 18 10.5 17.5 10.5 Q 17 10.5 16.5 10.8 Q 16 11 15.5 10.8 Q 15 10.5 14.5 10.5 Q 14 10.5 14 11 Z" fill="url(#waterGradient)"/>
+  
+  <!-- Wavy water line at top of torso -->
+  <path d="M 14 11 Q 15 11.5 16 11.2 Q 17 11.5 18 11" stroke="white" stroke-width="0.5" fill="none" opacity="0.6"/>
+  
+  <!-- Bubbles in water -->
+  <circle cx="15.5" cy="15" r="1" fill="white" opacity="0.7"/>
+  <circle cx="17" cy="17" r="0.8" fill="white" opacity="0.6"/>
+  <circle cx="15" cy="19" r="0.6" fill="white" opacity="0.5"/>
+  
+  <!-- Bottle -->
+  <rect x="19" y="9" width="3" height="8" rx="0.5" fill="url(#bottleGradient)"/>
+  <rect x="19.2" y="9.2" width="2.6" height="5" rx="0.3" fill="#E3F2FD"/>
+  <line x1="20" y1="11" x2="21.5" y2="11" stroke="white" stroke-width="0.3"/>
+  <line x1="20" y1="12.5" x2="21.5" y2="12.5" stroke="white" stroke-width="0.3"/>
+  
+  <!-- Arm holding bottle (white) -->
+  <path d="M 18 11 Q 18.5 10.5 19 10.5 Q 19.5 10.5 20 11" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+</svg>
+
