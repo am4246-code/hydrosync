@@ -50,6 +50,39 @@ app.get('/api/survey-data', async (req, res) => {
     }
 });
 
+app.post('/api/user-data', async (req, res) => {
+    const { id, name, gender, age, weight, exercise, daily_goal_oz, has_completed_survey } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ error: 'User ID is required.' });
+    }
+
+    try {
+        const { error } = await supabaseAdmin
+            .from('users')
+            .upsert({
+                id,
+                name,
+                gender,
+                age,
+                weight,
+                exercise,
+                daily_goal_oz,
+                has_completed_survey
+            }, { onConflict: 'id' });
+
+        if (error) {
+            console.error('Error upserting user data to Supabase:', error);
+            return res.status(500).json({ error: 'Failed to save user data.' });
+        }
+
+        res.json({ message: 'User data saved successfully.' });
+    } catch (err) {
+        console.error('Unexpected error saving user data:', err);
+        res.status(500).json({ error: 'An unexpected error occurred.' });
+    }
+});
+
 app.delete('/api/delete-user', async (req, res) => {
     const { userId } = req.body;
     if (!userId) {

@@ -524,20 +524,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
-            const { error } = await supabase
-                .from('users')
-                .upsert({ 
-                    id: user.id, 
-                    has_completed_survey: true, 
+            const response = await fetch('/api/user-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: user.id,
+                    name: name,
+                    gender: gender,
+                    age: age,
+                    weight: weight,
+                    exercise: exercise,
                     daily_goal_oz: goalIntake,
-                    name: name
-                }, { onConflict: 'id' });
+                    has_completed_survey: true,
+                }),
+            });
 
-            if (error) {
-                console.error('Error updating user survey status:', error);
-                alert('An error occurred saving your survey data. Please try again.');
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error saving user data via backend:', errorData);
+                alert(`Failed to save survey data: ${errorData.error || response.statusText}`);
                 return;
             }
+            const result = await response.json();
+            console.log('User data saved successfully via backend:', result.message);
         }
 
         const personalizedMessageEl = document.getElementById('personalized-message');
@@ -687,35 +698,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-            const { data: userData, error: userError } = await supabase
-                .from('users')
-                .select('has_completed_survey, daily_goal_oz')
-                .eq('id', user.id)
-                .single();
+            try {
+                const response = await fetch(`/api/survey-data?userId=${user.id}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const userData = await response.json();
 
-            if (userError && userError.code !== 'PGRST116') {
-                console.error("Error fetching user survey status:", userError);
-                bufferingContainer.style.display = 'none';
-                authContainer.style.display = 'block';
-                return;
-            }
-
-            if (userData && userData.has_completed_survey) {
+                if (userData && userData.has_completed_survey) {
+                    setTimeout(() => {
+                        bufferingContainer.style.display = 'none';
+                        mainContainer.style.display = 'block';
+                        goalIntake = userData.daily_goal_oz || goalIntake; 
+                        initializeWaterTracker(); // Call here!
+                        if (isMobileDevice() && loadNotificationPreference()) {
+                            requestNotificationPermission();
+                            scheduleHourlyNotification();
+                        }
+                    }, 500); // Keep buffering screen visible for 0.5 seconds
+                } else {
+                    setTimeout(() => {
+                        bufferingContainer.style.display = 'none';
+                        surveyContainer.style.display = 'block';
+                    }, 500); // Keep buffering screen visible for 0.5 seconds
+                }
+            } catch (error) {
+                console.error("Error fetching user survey status from backend:", error);
                 setTimeout(() => {
                     bufferingContainer.style.display = 'none';
-                    mainContainer.style.display = 'block';
-                    goalIntake = userData.daily_goal_oz || goalIntake; 
-                    initializeWaterTracker(); // Call here!
-                    if (isMobileDevice() && loadNotificationPreference()) {
-                        requestNotificationPermission();
-                        scheduleHourlyNotification();
-                    }
-                }, 500); // Keep buffering screen visible for 0.5 seconds
-            } else {
-                setTimeout(() => {
-                    bufferingContainer.style.display = 'none';
-                    surveyContainer.style.display = 'block';
-                }, 500); // Keep buffering screen visible for 0.5 seconds
+                    authContainer.style.display = 'block';
+                }, 500);
             }
         } else {
             setTimeout(() => {
