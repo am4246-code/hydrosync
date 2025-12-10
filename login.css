@@ -60,6 +60,15 @@ input[type="password"] {
     box-sizing: border-box;
 }
 
+#username {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
 button {
     width: 100%;
     padding: 12px;
