@@ -1,47 +1,63 @@
 <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#42A5F5;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1E88E5;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#81D4FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1976D2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="waterGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#B3E5FC;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#42A5F5;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="bottleWaterGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#B3E5FC;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#42A5F5;stop-opacity:0.9" />
     </linearGradient>
   </defs>
   
-  <!-- Rounded square background - bright blue -->
+  <!-- Rounded square background -->
   <rect width="32" height="32" rx="6" ry="6" fill="url(#bgGradient)"/>
   
-  <!-- Glass outline (white) - wider at top, tapering at bottom -->
-  <path d="M 10 8 L 10 24 Q 10 26 12 26 L 20 26 Q 22 26 22 24 L 22 8 Q 22 7 21.5 7 L 10.5 7 Q 10 7 10 8 Z" 
-        fill="none" 
-        stroke="white" 
-        stroke-width="1.5" 
-        stroke-linecap="round" 
-        stroke-linejoin="round"/>
+  <!-- Person silhouette - head with short swept-back hair (white, facing left) -->
+  <path d="M 12 8 Q 12 6 14 6 Q 16 6 16 8 L 16 9 Q 16 10 17 10 L 18 10 Q 19 10 19 9 L 19 8 Q 19 7 18.5 7 Q 18 7 17.5 7.5 Q 17 8 16.5 8 Q 16 8 15.5 7.5 Q 15 7 14.5 7 Q 14 7 13.5 7.5 Q 13 8 12.5 8 Q 12 8 12 8 Z" fill="white"/>
   
-  <!-- Water inside glass (light blue, about 3/4 full) -->
-  <path d="M 11 10 L 11 22 Q 11 23 12 23 L 20 23 Q 21 23 21 22 L 21 10" 
-        fill="#81D4FA" 
-        opacity="0.9"/>
+  <!-- Short swept-back hair -->
+  <path d="M 16 7 Q 15.5 6.5 15 7 Q 14.5 7.5 14 7.5 Q 13.5 7.5 13 7.2 Q 12.5 6.9 12 7" stroke="white" stroke-width="1" fill="none" stroke-linecap="round"/>
   
-  <!-- Wavy water surface line -->
-  <path d="M 11 10 Q 12 9.5 13 10 Q 14 10.5 15 10 Q 16 9.5 17 10 Q 18 10.5 19 10 Q 20 9.5 21 10" 
-        stroke="white" 
-        stroke-width="0.8" 
-        fill="none" 
-        opacity="0.7"/>
+  <!-- Shoulders and chest (white) -->
+  <path d="M 10 10 L 10 12 Q 10 13 11 13 L 21 13 Q 22 13 22 12 L 22 10 Q 22 9.5 21.5 9.5 L 10.5 9.5 Q 10 9.5 10 10 Z" fill="white"/>
   
-  <!-- Bright green circular clock in bottom right corner -->
-  <circle cx="23" cy="23" r="5" fill="#4CAF50" stroke="white" stroke-width="0.8"/>
+  <!-- Torso filled with water (blue gradient, chest up view) -->
+  <path d="M 11 13 L 11 24 Q 11 25 12 25 L 20 25 Q 21 25 21 24 L 21 13 Q 21 12.5 20.5 12.5 L 11.5 12.5 Q 11 12.5 11 13 Z" fill="url(#waterGradient)"/>
   
-  <!-- Clock hands pointing to ~10:20-10:25 -->
-  <!-- Hour hand (shorter, pointing upper left) -->
-  <line x1="23" y1="23" x2="21.5" y2="20.5" 
-        stroke="white" 
-        stroke-width="1.2" 
-        stroke-linecap="round"/>
+  <!-- Wavy water line at top of torso -->
+  <path d="M 11 13 Q 12 12.5 13 13 Q 14 13.5 15 13 Q 16 12.5 17 13 Q 18 13.5 19 13 Q 20 12.5 21 13" stroke="white" stroke-width="0.8" fill="none" opacity="0.7"/>
   
-  <!-- Minute hand (longer, pointing lower right) -->
-  <line x1="23" y1="23" x2="25.5" y2="25" 
-        stroke="white" 
-        stroke-width="1" 
-        stroke-linecap="round"/>
+  <!-- Bubbles in water inside person -->
+  <circle cx="13" cy="16" r="0.8" fill="white" opacity="0.8"/>
+  <circle cx="15.5" cy="18" r="1" fill="white" opacity="0.7"/>
+  <circle cx="18" cy="16" r="0.7" fill="white" opacity="0.6"/>
+  <circle cx="14.5" cy="20" r="0.6" fill="white" opacity="0.5"/>
+  <circle cx="17.5" cy="19" r="0.5" fill="white" opacity="0.5"/>
+  <circle cx="16" cy="22" r="0.6" fill="white" opacity="0.4"/>
+  
+  <!-- Arm with defined bicep (white, bent) -->
+  <path d="M 10 12 Q 9 13 8.5 14 Q 8 15 8.5 16 Q 9 17 10 16.5" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Water bottle - horizontal, tilted upwards, with silver cap -->
+  <!-- Bottle cap (silver/grey) -->
+  <rect x="6" y="14" width="2.5" height="1.5" rx="0.3" fill="#B0BEC5" opacity="0.9"/>
+  
+  <!-- Bottle body (transparent with water visible) -->
+  <rect x="6" y="15.5" width="2.5" height="4" rx="0.2" fill="none" stroke="#E0E0E0" stroke-width="0.3" opacity="0.6"/>
+  
+  <!-- Water inside bottle (light blue with bubbles) -->
+  <rect x="6.2" y="16" width="2.1" height="3" rx="0.1" fill="url(#bottleWaterGradient)"/>
+  
+  <!-- Bubbles in bottle -->
+  <circle cx="7" cy="17" r="0.4" fill="white" opacity="0.8"/>
+  <circle cx="7.8" cy="18" r="0.3" fill="white" opacity="0.7"/>
+  <circle cx="7.3" cy="18.5" r="0.25" fill="white" opacity="0.6"/>
+  
+  <!-- Mouth open (suggesting drinking) -->
+  <ellipse cx="19.5" cy="9.5" rx="0.5" ry="0.3" fill="#1976D2" opacity="0.6"/>
 </svg>
