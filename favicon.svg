@@ -1,32 +1,55 @@
 <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="teardropGradient" x1="50%" y1="15%" x2="50%" y2="100%">
-      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
-      <stop offset="35%" style="stop-color:#FFFFFF;stop-opacity:1" />
-      <stop offset="65%" style="stop-color:#E3F2FD;stop-opacity:1" />
-      <stop offset="90%" style="stop-color:#BBDEFB;stop-opacity:0.95" />
-      <stop offset="100%" style="stop-color:#90CAF9;stop-opacity:0.9" />
+    <linearGradient id="waterGradient" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" style="stop-color:#81D4FA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4FC3F7;stop-opacity:1" />
     </linearGradient>
-    <radialGradient id="teardropHighlight" cx="50%" cy="28%" r="40%">
-      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.9" />
-      <stop offset="60%" style="stop-color:#FFFFFF;stop-opacity:0.3" />
-      <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:0" />
-    </radialGradient>
   </defs>
   
   <!-- Solid bright blue background -->
   <rect width="32" height="32" rx="6" ry="6" fill="#2196F3"/>
   
-  <!-- Large white teardrop shape - point at top (16,4), rounded bottom -->
-  <path d="M 16 4 
-           L 13 8
-           C 10 9, 9 12, 10 15
-           C 11 18, 13 20, 16 24
-           C 19 20, 21 18, 22 15
-           C 23 12, 22 9, 19 8
-           L 16 4 Z" 
-        fill="url(#teardropGradient)"/>
+  <!-- Glass outline (white) - wider at top, tapering at bottom -->
+  <path d="M 10 8 
+           L 10 24
+           Q 10 26, 12 26
+           L 20 26
+           Q 22 26, 22 24
+           L 22 8
+           Z" 
+        fill="none" 
+        stroke="white" 
+        stroke-width="1.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
   
-  <!-- Glossy highlight on upper-middle section for 3D glossy effect -->
-  <ellipse cx="16" cy="11" rx="5" ry="6" fill="url(#teardropHighlight)"/>
+  <!-- Water inside glass (light blue, about 3/4 full) -->
+  <path d="M 11 10 
+           L 11 20
+           Q 11 21, 12 21
+           L 20 21
+           Q 21 21, 21 20
+           L 21 10
+           Z" 
+        fill="url(#waterGradient)"/>
+  
+  <!-- Wavy water surface line -->
+  <path d="M 11 10 
+           Q 13 9.5, 15 10
+           Q 17 10.5, 19 10
+           Q 21 9.5, 21 10" 
+        stroke="white" 
+        stroke-width="0.8" 
+        fill="none" 
+        opacity="0.8"/>
+  
+  <!-- Bright green circular clock in bottom right, overlapping glass -->
+  <circle cx="20" cy="22" r="5" fill="#4CAF50" stroke="white" stroke-width="0.5"/>
+  
+  <!-- Clock hands (white) pointing to around 10:20-10:25 -->
+  <!-- Hour hand (shorter, pointing upper left) -->
+  <line x1="20" y1="22" x2="18.5" y2="20.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+  
+  <!-- Minute hand (longer, pointing lower right) -->
+  <line x1="20" y1="22" x2="22.5" y2="24" stroke="white" stroke-width="1" stroke-linecap="round"/>
 </svg>
