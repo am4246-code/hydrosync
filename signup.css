@@ -79,3 +79,31 @@ button:hover {
 .login-link a:hover {
     text-decoration: underline;
 }
+
+.hydrosync-branding { /* Using a class for reusability */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 2px solid #2196F3;
+    border-radius: 10px;
+    background-color: #2196F3;
+}
+
+.hydrosync-branding h1 {
+    color: white;
+    margin: 0; /* Margin bottom for space */
+    font-size: 32px;
+    background-color: transparent; /* Apply background color here */
+    font-weight: bold;
+}
+
+.hydrosync-branding img {
+    height: 32px;
+    width: auto;
+    margin-right: 10px;
+    border: 2px solid white;
+    border-radius: 5px;
+}
