@@ -9,7 +9,7 @@ document.getElementById('signup-form').addEventListener('submit', function(event
         return;
     }
 
-    fetch('/register', {
+    fetch('/register?t=' + new Date().getTime(), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
