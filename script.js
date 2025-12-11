@@ -399,18 +399,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const recommendedIntakeForModal = sessionStorage.getItem('recommendedIntakeOz');
     if (recommendedIntakeForModal && recommendationModal && modalMessage) {
         modalMessage.textContent = `Based on your survey, you should aim to drink about ${recommendedIntakeForModal} oz of water per day.`;
-        recommendationModal.style.display = 'flex'; // Show the modal
+        recommendationModal.style.display = 'block'; // Show the modal
+        console.log('Modal shown');
 
         const hideModalAndProceed = () => {
+            console.log('Hiding modal');
             recommendationModal.style.display = 'none';
             sessionStorage.removeItem('recommendedIntakeOz'); // Clear from sessionStorage after showing
         };
 
         if (modalContinueBtn) {
-            modalContinueBtn.addEventListener('click', hideModalAndProceed);
+            modalContinueBtn.addEventListener('click', () => {
+                console.log('Continue button clicked');
+                hideModalAndProceed();
+            });
         }
         if (closeModalBtn) {
-            closeModalBtn.addEventListener('click', hideModalAndProceed);
+            closeModalBtn.addEventListener('click', () => {
+                console.log('Close button clicked');
+                hideModalAndProceed();
+            });
         }
     }
 

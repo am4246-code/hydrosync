@@ -1,45 +1,34 @@
 document.getElementById('signup-form').addEventListener('submit', function(event) {
     event.preventDefault();
-    const email = event.target.email.value; // Changed from username to email
+    const email = event.target.email.value;
     const password = event.target.password.value;
     const confirmPassword = event.target['confirm-password'].value;
-
-    if (email.trim() === '' || password.trim() === '' || confirmPassword.trim() === '') {
-        showToast('Please fill in all fields.', 'error');
-        return;
-    }
 
     if (password !== confirmPassword) {
         showToast('Passwords do not match.', 'error');
         return;
     }
 
-    // Get existing users from localStorage or initialize an empty array
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-
-    // Check if an account with this email already exists
-    const emailExists = users.some(user => user.email === email);
-
-    if (emailExists) {
-        showToast('An account with this email already exists. Please login or use a different email.', 'error');
-        return;
-    }
-
-    // Add the new user to the array
-    users.push({ email, password });
-    localStorage.setItem('users', JSON.stringify(users));
-
-    console.log('Signing up with:', { email, password });
-    sessionStorage.setItem('loggedInUserEmail', email);
-    
-    const signupButton = event.target.querySelector('button');
-    signupButton.disabled = true;
-    signupButton.textContent = 'Signing up...';
-
-    setTimeout(() => {
-        console.log('Sign-up successful!');
-        showToast('Sign-up successful! You can now complete the survey.', 'success');
-        window.location.href = 'survey.html';
-    }, 2000);
+    fetch('/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+    })
+    .then(response => response.json().then(data => ({ status: response.status, body: data })))
+    .then(({ status, body }) => {
+        if (status === 201) {
+            showToast(body.message, 'success');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        } else {
+            showToast(body.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('An error occurred. Please try again.', 'error');
+    });
 });
-
