@@ -7,14 +7,14 @@ export const deleteAccount = async () => {
     throw new Error('No user is currently signed in.');
   }
 
-  // 1. Delete from water_intake table
+  // 1. Delete from daily_intake table
   const { error: waterIntakeError } = await supabase
-    .from('water_intake')
+    .from('daily_intake')
     .delete()
     .eq('user_id', user.id);
 
   if (waterIntakeError) {
-    console.error('Error deleting from water_intake:', waterIntakeError);
+    console.error('Error deleting from daily_intake:', waterIntakeError);
     throw new Error(`Failed to delete water intake data: ${waterIntakeError.message}`);
   }
 

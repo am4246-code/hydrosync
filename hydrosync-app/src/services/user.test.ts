@@ -61,7 +61,7 @@ describe('deleteAccount', () => {
     await deleteAccount();
 
     expect(supabase.auth.getUser).toHaveBeenCalledTimes(1);
-    expect(supabase.from).toHaveBeenCalledWith('water_intake');
+    expect(supabase.from).toHaveBeenCalledWith('daily_intake');
     expect(supabase.from).toHaveBeenCalledWith('profiles');
     expect(supabase.functions.invoke).toHaveBeenCalledWith('delete-user', {
       method: 'POST',
@@ -77,7 +77,7 @@ describe('deleteAccount', () => {
     expect(supabase.functions.invoke).not.toHaveBeenCalled();
   });
 
-  test('should throw error if water_intake deletion fails', async () => {
+  test('should throw error if daily_intake deletion fails', async () => {
     (supabase.from as jest.Mock).mockReturnValueOnce({
       delete: jest.fn(() => ({
         eq: jest.fn(() => ({
@@ -97,7 +97,7 @@ describe('deleteAccount', () => {
             error: null,
           })),
         })),
-      }) // water_intake success
+      }) // daily_intake success
       .mockReturnValueOnce({
         delete: jest.fn(() => ({
           eq: jest.fn(() => ({

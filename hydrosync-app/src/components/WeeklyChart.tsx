@@ -22,7 +22,7 @@ const WeeklyChart: React.FC = () => {
         sevenDaysAgo.setDate(today.getDate() - 6); // Get data for the last 7 days
 
         const { data, error } = await supabase
-          .from('water_intake')
+          .from('daily_intake')
           .select('date, amount_oz')
           .eq('user_id', user.id)
           .gte('date', sevenDaysAgo.toISOString().split('T')[0])
