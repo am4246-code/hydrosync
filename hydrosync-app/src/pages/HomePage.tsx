@@ -9,6 +9,10 @@ import { deleteAccount } from '../services/user';
 
 import WaterTracker from '../components/WaterTracker';
 
+import { checkAchievements, Achievement } from '../services/achievements';
+import Achievements from '../components/Achievements';
+import Quote from '../components/Quote';
+
 interface Profile {
   name: string;
   daily_water_goal_oz: number;
@@ -21,6 +25,7 @@ const HomePage: React.FC = () => {
   const [dailyIntake, setDailyIntake] = useState(0);
   const [bottlesToAdd, setBottlesToAdd] = useState<number | ''>(1);
   const [addedBottles, setAddedBottles] = useState(0);
+  const [earnedAchievements, setEarnedAchievements] = useState<Achievement[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -40,19 +45,38 @@ const HomePage: React.FC = () => {
           if (profileError) throw profileError;
           setProfile(profileData);
 
-          const today = new Date().toISOString().split('T')[0];
+          const today = new Date();
+          const todayStr = today.toISOString().split('T')[0];
+          const sevenDaysAgo = new Date(today);
+          sevenDaysAgo.setDate(today.getDate() - 6);
+          const sevenDaysAgoStr = sevenDaysAgo.toISOString().split('T')[0];
+
           const { data: intakeData, error: intakeError } = await supabase
             .from('daily_intake')
-            .select('amount_oz')
+            .select('date, amount_oz')
             .eq('user_id', user.id)
-            .eq('date', today)
-            .single();
+            .gte('date', sevenDaysAgoStr)
+            .lte('date', todayStr)
+            .order('date', { ascending: true });
 
           if (intakeError && intakeError.code !== 'PGRST116') {
             throw intakeError;
           }
+
           if (intakeData) {
-            setDailyIntake(intakeData.amount_oz);
+            const todayIntake = intakeData.find(d => d.date === todayStr);
+            if (todayIntake) {
+              setDailyIntake(todayIntake.amount_oz);
+            }
+
+            const totalIntake = intakeData.reduce((acc, curr) => acc + curr.amount_oz, 0);
+            const newAchievements = checkAchievements(
+              todayIntake?.amount_oz || 0,
+              intakeData,
+              totalIntake,
+              profileData.daily_water_goal_oz
+            );
+            setEarnedAchievements(newAchievements);
           }
         } catch (err: any) {
           setError(err.message);
@@ -96,6 +120,17 @@ const HomePage: React.FC = () => {
       );
     }
   };
+
+  const [theme, setTheme] = useState('light');
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+  };
+
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
 
   const handleDeleteAccount = async () => {
     if (window.confirm('Are you sure you want to delete your account? This action is irreversible.')) {
@@ -160,8 +195,19 @@ const HomePage: React.FC = () => {
           <WeeklyChart />
         </section>
 
+        <section className="quote-section">
+          <Quote />
+        </section>
+        
+        <section className="achievements-section section-card">
+          <Achievements earnedAchievements={earnedAchievements} />
+        </section>
+
         <section className="settings-section section-card">
           <h2>Settings</h2>
+          <button onClick={toggleTheme} className="theme-toggle-button">
+            {theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          </button>
           <button onClick={handleDeleteAccount} className="delete-account-button">Delete Account</button>
         </section>
       </main>
@@ -171,3 +217,4 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+

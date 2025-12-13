@@ -1,0 +1,14 @@
+.quote-container {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: var(--card-background);
+  box-shadow: var(--card-shadow);
+  text-align: center;
+}
+
+.quote-text {
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
