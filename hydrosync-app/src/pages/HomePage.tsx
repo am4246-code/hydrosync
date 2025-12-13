@@ -9,6 +9,8 @@ import { deleteAccount } from '../services/user';
 
 import WaterTracker from '../components/WaterTracker';
 
+import WaterCups from '../components/WaterCups';
+
 interface Profile {
   name: string;
   daily_water_goal_oz: number;
@@ -118,6 +120,7 @@ const HomePage: React.FC = () => {
   }
 
   const progressPercentage = profile ? (dailyIntake / profile.daily_water_goal_oz) * 100 : 0;
+  const bottlesDrunk = profile ? dailyIntake / profile.bottle_size_oz : 0;
 
   return (
     <div className="homepage-container">
@@ -142,6 +145,7 @@ const HomePage: React.FC = () => {
             ></div>
           </div>
           <p>{dailyIntake} / {profile?.daily_water_goal_oz} oz</p>
+          <WaterCups bottles={bottlesDrunk} />
           <div className="add-water-controls">
             <input
               type="number"
