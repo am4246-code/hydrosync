@@ -7,10 +7,28 @@ export interface Achievement {
 
 export const achievements: Achievement[] = [
   {
+    id: 'first-drink',
+    name: 'First Drink',
+    description: 'Logged your first water intake.',
+    icon: '💧',
+  },
+  {
+    id: '3-day-streak',
+    name: '3-Day Streak',
+    description: 'Drank your daily goal for 3 days in a row.',
+    icon: '🥉',
+  },
+  {
     id: '7-day-streak',
     name: '7-Day Streak',
     description: 'Drank your daily goal for 7 days in a row.',
     icon: '🔥',
+  },
+  {
+    id: '14-day-streak',
+    name: '14-Day Streak',
+    description: 'Drank your daily goal for 14 days in a row.',
+    icon: '🏆',
   },
   {
     id: 'perfect-week',
@@ -28,7 +46,13 @@ export const achievements: Achievement[] = [
     id: 'hydrator',
     name: 'Hydrator',
     description: 'Drank 1000 oz of water in total.',
-    icon: '💧',
+    icon: '🌊',
+  },
+  {
+    id: 'master-hydrator',
+    name: 'Master Hydrator',
+    description: 'Drank 5000 oz of water in total.',
+    icon: '👑',
   },
 ];
 
@@ -40,6 +64,11 @@ export const checkAchievements = (
 ): Achievement[] => {
   const earned: Achievement[] = [];
 
+  // First Drink
+  if (totalIntake > 0) {
+    earned.push(achievements.find(a => a.id === 'first-drink')!);
+  }
+
   // 1 Gallon Club
   if (dailyIntake >= 128) {
     earned.push(achievements.find(a => a.id === '1-gallon-club')!);
@@ -50,13 +79,31 @@ export const checkAchievements = (
     earned.push(achievements.find(a => a.id === 'hydrator')!);
   }
 
-  // 7-Day Streak
-  if (weeklyData.length >= 7) {
-    const last7Days = weeklyData.slice(-7);
-    if (last7Days.every(d => d.amount_oz >= dailyGoal)) {
-      earned.push(achievements.find(a => a.id === '7-day-streak')!);
+  // Master Hydrator
+  if (totalIntake >= 5000) {
+    earned.push(achievements.find(a => a.id === 'master-hydrator')!);
+  }
+
+  // Streaks
+  let streak = 0;
+  for (let i = weeklyData.length - 1; i >= 0; i--) {
+    if (weeklyData[i].amount_oz >= dailyGoal) {
+      streak++;
+    } else {
+      break;
     }
   }
+
+  if (streak >= 3) {
+    earned.push(achievements.find(a => a.id === '3-day-streak')!);
+  }
+  if (streak >= 7) {
+    earned.push(achievements.find(a => a.id === '7-day-streak')!);
+  }
+  if (streak >= 14) {
+    earned.push(achievements.find(a => a.id === '14-day-streak')!);
+  }
+
 
   // Perfect Week (Sunday to Saturday)
   if (weeklyData.length >= 7) {

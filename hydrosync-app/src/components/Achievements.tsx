@@ -8,8 +8,8 @@ interface AchievementsProps {
 
 const Achievements: React.FC<AchievementsProps> = ({ earnedAchievements }) => {
   return (
-    <div className="achievements-container">
-      <h3>Achievements</h3>
+    <div className="achievements-container section-card">
+      <h2>Achievements</h2>
       <div className="achievements-list">
         {earnedAchievements.map(achievement => (
           <div key={achievement.id} className="achievement-badge" title={achievement.description}>
