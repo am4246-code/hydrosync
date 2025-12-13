@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "hydrosync-app",
+			"problemMatcher": [],
+			"label": "npm: start - hydrosync-app",
+			"detail": "react-scripts start"
+		}
+	]
+}

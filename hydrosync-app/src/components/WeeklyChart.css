@@ -1,0 +1,39 @@
+.weekly-chart-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 200px;
+  width: 100%;
+  padding: 20px 0;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.chart-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.chart-bar {
+  width: 30px;
+  height: 150px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column-reverse; /* To make the fill go upwards */
+}
+
+.chart-bar-fill {
+  width: 100%;
+  background-color: #17a2b8;
+  border-radius: 5px;
+  transition: height 0.5s ease-out;
+}
+
+.chart-label {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #6c757d;
+}
