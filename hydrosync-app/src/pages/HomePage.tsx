@@ -1,0 +1,161 @@
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { supabase } from '../services/supabase';
+import WeeklyChart from '../components/WeeklyChart';
+import LoadingPage from './LoadingPage';
+import './HomePage.css';
+import { useNavigate } from 'react-router-dom';
+import { deleteAccount } from '../services/user';
+
+interface Profile {
+  name: string;
+  daily_water_goal_oz: number;
+  bottle_size_oz: number;
+}
+
+const HomePage: React.FC = () => {
+  const { user, signOut } = useAuth();
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [dailyIntake, setDailyIntake] = useState(0);
+  const [bottlesToAdd, setBottlesToAdd] = useState<number | ''>(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        setLoading(true);
+        setError(null);
+        try {
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .select('name, daily_water_goal_oz, bottle_size_oz')
+            .eq('id', user.id)
+            .single();
+
+          if (profileError) throw profileError;
+          setProfile(profileData);
+
+          const today = new Date().toISOString().split('T')[0];
+          const { data: intakeData, error: intakeError } = await supabase
+            .from('water_intake')
+            .select('amount_oz')
+            .eq('user_id', user.id)
+            .eq('date', today)
+            .single();
+
+          if (intakeError && intakeError.code !== 'PGRST116') {
+            throw intakeError;
+          }
+          if (intakeData) {
+            setDailyIntake(intakeData.amount_oz);
+          }
+        } catch (err: any) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchData();
+  }, [user]);
+
+  const handleAddWater = async () => {
+    if (!bottlesToAdd || !profile) return;
+    const amountInOz = Number(bottlesToAdd) * profile.bottle_size_oz;
+    const newIntake = dailyIntake + amountInOz;
+
+    if (dailyIntake < profile.daily_water_goal_oz && newIntake >= profile.daily_water_goal_oz) {
+      navigate('/congrats');
+    }
+
+    setDailyIntake(newIntake);
+
+    const today = new Date().toISOString().split('T')[0];
+    if (user) {
+      await supabase.from('water_intake').upsert(
+        {
+          user_id: user.id,
+          date: today,
+          amount_oz: newIntake,
+        },
+        { onConflict: 'user_id, date' }
+      );
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (window.confirm('Are you sure you want to delete your account? This action is irreversible.')) {
+      try {
+        await deleteAccount();
+        alert('Account deleted successfully.');
+        signOut();
+      } catch (error: any) {
+        alert(`Failed to delete account: ${error.message}`);
+      }
+    }
+  };
+
+  if (loading) {
+    return <LoadingPage />;
+  }
+
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
+
+  const progressPercentage = profile ? (dailyIntake / profile.daily_water_goal_oz) * 100 : 0;
+
+  return (
+    <div className="homepage-container">
+      <header className="homepage-header">
+        <div style={{ flex: 1 }}></div>
+        <h1>
+          <img src="/nmn.png" alt="HydroSync logo" className="header-logo" />
+          HydroSync
+        </h1>
+        <div style={{ flex: 1 }}></div>
+        <button onClick={signOut} className="logout-button">Logout</button>
+      </header>
+
+      <main className="dashboard">
+        <section className="daily-tracker section-card">
+          <h2>Today's Progress</h2>
+          <p>Hello, {profile?.name}! Your goal is {profile?.daily_water_goal_oz} oz.</p>
+          <div className="progress-bar-container">
+            <div
+              className="progress-bar-fill"
+              style={{ width: `${Math.min(progressPercentage, 100)}%` }}
+            ></div>
+          </div>
+          <p>{dailyIntake} / {profile?.daily_water_goal_oz} oz</p>
+          <div className="add-water-controls">
+            <input
+              type="number"
+              value={bottlesToAdd}
+              onChange={(e) => setBottlesToAdd(parseInt(e.target.value) || '')}
+              min="1"
+              className="bottle-input"
+            />
+            <span> bottle(s) of {profile?.bottle_size_oz} oz</span>
+            <button onClick={handleAddWater} className="add-button">Add</button>
+          </div>
+        </section>
+
+        <section className="weekly-progress section-card">
+          <h2>Weekly Progress</h2>
+          <WeeklyChart />
+        </section>
+
+        <section className="settings-section section-card">
+          <h2>Settings</h2>
+          <button onClick={handleDeleteAccount} className="delete-account-button">Delete Account</button>
+        </section>
+      </main>
+    </div>
+  );
+};
+
+export default HomePage;
