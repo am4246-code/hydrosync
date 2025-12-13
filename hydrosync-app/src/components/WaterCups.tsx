@@ -13,7 +13,7 @@ const WaterCups: React.FC<WaterCupsProps> = ({ bottles }) => {
       {cups.map(i => (
         <div key={i} className="water-cup">
           <span role="img" aria-label="water-cup">
-            &#x1F964;
+            &#x1F37A;
           </span>
         </div>
       ))}

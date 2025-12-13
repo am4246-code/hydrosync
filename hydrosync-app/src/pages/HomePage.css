@@ -131,6 +131,12 @@
   background-color: #138496;
 }
 
+.add-amount-preview {
+  font-size: 14px;
+  color: #6c757d;
+  margin-left: 5px;
+}
+
 /* Settings Section */
 .settings-section {
   display: flex;

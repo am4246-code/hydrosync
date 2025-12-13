@@ -155,6 +155,11 @@ const HomePage: React.FC = () => {
               className="bottle-input"
             />
             <span> bottle(s) of {profile?.bottle_size_oz} oz</span>
+            {profile && bottlesToAdd && (
+              <span className="add-amount-preview">
+                ({Number(bottlesToAdd) * profile.bottle_size_oz} oz)
+              </span>
+            )}
             <button onClick={handleAddWater} className="add-button">Add</button>
           </div>
         </section>
