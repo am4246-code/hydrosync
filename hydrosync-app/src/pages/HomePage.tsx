@@ -7,6 +7,8 @@ import './HomePage.css';
 import { useNavigate } from 'react-router-dom';
 import { deleteAccount } from '../services/user';
 
+import WaterTracker from '../components/WaterTracker';
+
 interface Profile {
   name: string;
   daily_water_goal_oz: number;
@@ -18,6 +20,7 @@ const HomePage: React.FC = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [dailyIntake, setDailyIntake] = useState(0);
   const [bottlesToAdd, setBottlesToAdd] = useState<number | ''>(1);
+  const [addedBottles, setAddedBottles] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -62,6 +65,13 @@ const HomePage: React.FC = () => {
     fetchData();
   }, [user]);
 
+  useEffect(() => {
+    if (addedBottles > 0) {
+      const timer = setTimeout(() => setAddedBottles(0), 100); // Reset after a short delay
+      return () => clearTimeout(timer);
+    }
+  }, [addedBottles]);
+
   const handleAddWater = async () => {
     if (!bottlesToAdd || !profile) return;
     const amountInOz = Number(bottlesToAdd) * profile.bottle_size_oz;
@@ -72,6 +82,7 @@ const HomePage: React.FC = () => {
     }
 
     setDailyIntake(newIntake);
+    setAddedBottles(Number(bottlesToAdd));
 
     const today = new Date().toISOString().split('T')[0];
     if (user) {
@@ -154,6 +165,7 @@ const HomePage: React.FC = () => {
           <button onClick={handleDeleteAccount} className="delete-account-button">Delete Account</button>
         </section>
       </main>
+      <WaterTracker bottles={addedBottles} />
     </div>
   );
 };
