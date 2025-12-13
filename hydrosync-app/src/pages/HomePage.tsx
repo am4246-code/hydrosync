@@ -39,7 +39,7 @@ const HomePage: React.FC = () => {
 
           const today = new Date().toISOString().split('T')[0];
           const { data: intakeData, error: intakeError } = await supabase
-            .from('water_intake')
+            .from('daily_intake')
             .select('amount_oz')
             .eq('user_id', user.id)
             .eq('date', today)
@@ -75,13 +75,13 @@ const HomePage: React.FC = () => {
 
     const today = new Date().toISOString().split('T')[0];
     if (user) {
-      await supabase.from('water_intake').upsert(
+      await supabase.from('daily_intake').upsert(
         {
           user_id: user.id,
           date: today,
           amount_oz: newIntake,
         },
-        { onConflict: 'user_id, date' }
+        { onConflict: 'user_id,date' }
       );
     }
   };
