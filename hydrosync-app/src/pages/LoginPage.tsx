@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Import useEffect
 import { useAuth } from '../context/AuthContext'; // Import useAuth
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './LoginPage.css';
@@ -9,8 +9,29 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [passwordCriteria, setPasswordCriteria] = useState({
+    minLength: false,
+    hasLowercase: false,
+    hasUppercase: false,
+    hasDigit: false,
+    hasSymbol: false,
+  });
   const { signIn, signUp } = useAuth(); // Use the useAuth hook
   const navigate = useNavigate(); // Initialize useNavigate
+
+  useEffect(() => {
+    if (!isLogin) {
+      setPasswordCriteria({
+        minLength: password.length >= 6,
+        hasLowercase: /[a-z]/.test(password),
+        hasUppercase: /[A-Z]/.test(password),
+        hasDigit: /[0-9]/.test(password),
+        hasSymbol: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
+      });
+    }
+  }, [password, isLogin]);
+
+  const isPasswordValid = Object.values(passwordCriteria).every(Boolean);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +43,13 @@ const LoginPage: React.FC = () => {
         const { error } = await signIn(email, password);
         if (error) throw error;
       } else {
-        // Sign Up
+        // Sign Up - Only proceed if password is valid
+        if (!isPasswordValid) {
+          setLoading(false);
+          setError('Password does not meet all requirements.');
+          return;
+        }
+
         const { error } = await signUp(email, password);
         if (error) {
           // Check for duplicate email error (Supabase specific error message)
@@ -33,7 +60,6 @@ const LoginPage: React.FC = () => {
           }
         } else {
           // Successful sign up
-          alert('Signed up successfully! Check your email to confirm.');
           navigate('/survey'); // Redirect to survey page
         }
       }
@@ -60,7 +86,7 @@ const LoginPage: React.FC = () => {
         </h1>
       </header>
       <div className="auth-box">
-        <h2>{isLogin ? 'Welcome Back, Lets Get Hydrating!' : 'New Here? Start Your Hidration Journey!'}</h2>
+        <h2>{isLogin ? 'Welcome Back, Lets Get Hydrating!' : 'New Here? Start Your Hydration Journey!'}</h2>
         <form onSubmit={handleAuth}>
           <div className="input-group">
             <label htmlFor="email">Email</label>
@@ -81,9 +107,25 @@ const LoginPage: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            {/* Password Requirements */}
+            {!isLogin && (
+              <div className="password-requirements">
+                <p className={passwordCriteria.minLength ? 'valid' : 'invalid'}>
+                  {passwordCriteria.minLength ? '✔' : '✖'} Minimum 6 characters
+                </p>
+                <p className={passwordCriteria.hasLowercase ? 'valid' : 'invalid'}> At least one lowercase letter
+                </p>
+                <p className={passwordCriteria.hasUppercase ? 'valid' : 'invalid'}> At least one uppercase letter
+                </p>
+                <p className={passwordCriteria.hasDigit ? 'valid' : 'invalid'}> At least one digit
+                </p>
+                <p className={passwordCriteria.hasSymbol ? 'valid' : 'invalid'}> At least one symbol
+                </p>
+              </div>
+            )}
           </div>
           {error && <p className="error-message">{error}</p>}
-          <button type="submit" disabled={loading}>
+          <button type="submit" disabled={loading || (!isLogin && !isPasswordValid)}>
             {loading ? 'Loading...' : isLogin ? 'Login' : 'Sign Up'}
           </button>
         </form>
