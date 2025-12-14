@@ -60,7 +60,7 @@ const LoginPage: React.FC = () => {
           }
         } else {
           // Successful sign up
-          navigate('/survey'); // Redirect to survey page
+          navigate('/loading'); // Redirect to loading page
         }
       }
     } catch (err: any) {
