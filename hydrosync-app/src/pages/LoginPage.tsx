@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react'; // Import useEffect
-import { useAuth } from '../context/AuthContext'; // Import useAuth
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useState, useEffect } from 'react'; // Import useEffect for side effects (like password validation)
+import { useAuth } from '../context/AuthContext'; // Custom hook for authentication context
+import { useNavigate } from 'react-router-dom'; // Hook for programmatic navigation
 import './LoginPage.css';
 
 const LoginPage: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [isLogin, setIsLogin] = useState(true); // Toggles between login and sign-up views
+  const [email, setEmail] = useState(''); // State for email input
+  const [password, setPassword] = useState(''); // State for password input
+  const [loading, setLoading] = useState(false); // State to manage loading during auth requests
+  const [error, setError] = useState<string | null>(null); // State to display authentication errors
+
+  // State to track if password meets various criteria for sign-up
   const [passwordCriteria, setPasswordCriteria] = useState({
     minLength: false,
     hasLowercase: false,
@@ -16,64 +18,73 @@ const LoginPage: React.FC = () => {
     hasDigit: false,
     hasSymbol: false,
   });
-  const { signIn, signUp } = useAuth(); // Use the useAuth hook
-  const navigate = useNavigate(); // Initialize useNavigate
 
+  const { signIn, signUp } = useAuth(); // Destructure signIn and signUp methods from auth context
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
+  // useEffect to validate password against criteria whenever password or login/signup mode changes
   useEffect(() => {
+    // Only perform validation if in sign-up mode
     if (!isLogin) {
       setPasswordCriteria({
-        minLength: password.length >= 6,
-        hasLowercase: /[a-z]/.test(password),
-        hasUppercase: /[A-Z]/.test(password),
-        hasDigit: /[0-9]/.test(password),
-        hasSymbol: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
+        minLength: password.length >= 6, // Minimum 6 characters
+        hasLowercase: /[a-z]/.test(password), // At least one lowercase letter
+        hasUppercase: /[A-Z]/.test(password), // At least one uppercase letter
+        hasDigit: /[0-9]/.test(password), // At least one digit
+        hasSymbol: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password), // At least one symbol
       });
     }
-  }, [password, isLogin]);
+  }, [password, isLogin]); // Re-run effect when password or isLogin changes
 
+  // Check if all password criteria are met
   const isPasswordValid = Object.values(passwordCriteria).every(Boolean);
 
+  // Handles both login and sign-up submissions
   const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
+    e.preventDefault(); // Prevent default form submission behavior
+    setLoading(true); // Set loading state to true
+    setError(null); // Clear any previous errors
 
     try {
       if (isLogin) {
+        // Attempt to sign in
         const { error } = await signIn(email, password);
-        if (error) throw error;
+        if (error) throw error; // If error, throw it to be caught
       } else {
-        // Sign Up - Only proceed if password is valid
+        // Sign Up flow
+        // Prevent sign-up if password does not meet requirements
         if (!isPasswordValid) {
           setLoading(false);
           setError('Password does not meet all requirements.');
-          return;
+          return; // Stop execution
         }
 
+        // Attempt to sign up
         const { error } = await signUp(email, password);
         if (error) {
-          // Check for duplicate email error (Supabase specific error message)
+          // Check for specific Supabase error message for duplicate email
           if (error.message.includes('User already registered')) {
             setError('An account with this email already exists. Please login or use a different email.');
           } else {
-            throw error;
+            throw error; // Throw other errors to be caught
           }
         } else {
-          // Successful sign up
-          navigate('/loading'); // Redirect to loading page
+          // Successful sign up: redirect to loading screen
+          // The loading screen will then handle redirection to the survey page
+          navigate('/loading');
         }
       }
     } catch (err: any) {
+      // Catch and display various authentication errors
       if (err.message === 'Invalid login credentials') {
         setError('Invalid email or password. Please try again.');
       } else if (err.message === 'Email not confirmed') {
         setError('Please confirm your email address before logging in.');
-      }
-       else {
-        setError(err.message);
+      } else {
+        setError(err.message); // Display generic error message
       }
     } finally {
-      setLoading(false);
+      setLoading(false); // Reset loading state
     }
   };
 
@@ -86,6 +97,7 @@ const LoginPage: React.FC = () => {
         </h1>
       </header>
       <div className="auth-box">
+        {/* Dynamic heading based on login/signup mode */}
         <h2>{isLogin ? 'Welcome Back, Lets Get Hydrating!' : 'New Here? Start Your Hydration Journey!'}</h2>
         <form onSubmit={handleAuth}>
           <div className="input-group">
@@ -107,7 +119,7 @@ const LoginPage: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {/* Password Requirements */}
+            {/* Password Requirements: Visible only in sign-up mode */}
             {!isLogin && (
               <div className="password-requirements">
                 <p className={passwordCriteria.minLength ? 'valid' : 'invalid'}>
@@ -129,6 +141,7 @@ const LoginPage: React.FC = () => {
             {loading ? 'Loading...' : isLogin ? 'Login' : 'Sign Up'}
           </button>
         </form>
+        {/* Toggle between Login and Sign Up */}
         <p className="toggle-auth">
           {isLogin ? "Don't have an account? " : "Already have an account? "}
           <span onClick={() => setIsLogin(!isLogin)}>
