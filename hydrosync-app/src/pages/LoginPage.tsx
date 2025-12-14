@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext'; // Import useAuth
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './LoginPage.css';
 
 const LoginPage: React.FC = () => {
@@ -9,6 +10,7 @@ const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { signIn, signUp } = useAuth(); // Use the useAuth hook
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,14 +22,28 @@ const LoginPage: React.FC = () => {
         const { error } = await signIn(email, password);
         if (error) throw error;
       } else {
+        // Sign Up
         const { error } = await signUp(email, password);
-        if (error) throw error;
-        alert('Signed up successfully! Check your email to confirm.');
+        if (error) {
+          // Check for duplicate email error (Supabase specific error message)
+          if (error.message.includes('User already registered')) {
+            setError('An account with this email already exists. Please login or use a different email.');
+          } else {
+            throw error;
+          }
+        } else {
+          // Successful sign up
+          alert('Signed up successfully! Check your email to confirm.');
+          navigate('/survey'); // Redirect to survey page
+        }
       }
     } catch (err: any) {
       if (err.message === 'Invalid login credentials') {
         setError('Invalid email or password. Please try again.');
-      } else {
+      } else if (err.message === 'Email not confirmed') {
+        setError('Please confirm your email address before logging in.');
+      }
+       else {
         setError(err.message);
       }
     } finally {

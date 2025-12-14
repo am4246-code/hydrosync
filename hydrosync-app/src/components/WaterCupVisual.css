@@ -1,0 +1,45 @@
+/* src/components/WaterCupVisual.css */
+
+.water-cup-visual-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.cup-body {
+  width: 100px;
+  height: 150px;
+  background-color: #f0f0f0;
+  border: 2px solid #ccc;
+  border-radius: 0 0 30px 30px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end; /* Align liquid to the bottom */
+}
+
+.cup-base {
+  width: 110px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 0 0 50% 50%;
+  margin-top: -5px; /* Overlap slightly with body */
+  position: relative;
+  z-index: 1;
+}
+
+.liquid-fill {
+  width: 100%;
+  background-color: #5998c5; /* Water color */
+  transition: height 0.5s ease-out; /* Smooth fill animation */
+  border-radius: 0 0 30px 30px;
+}
+
+.cup-label {
+  margin-top: 10px;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: var(--text-color);
+}

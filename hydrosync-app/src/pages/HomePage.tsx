@@ -4,14 +4,15 @@ import { supabase } from '../services/supabase';
 import WeeklyChart from '../components/WeeklyChart';
 import LoadingPage from './LoadingPage';
 import './HomePage.css';
-import { useNavigate } from 'react-router-dom';
-import { deleteAccount } from '../services/user';
+import { useNavigate, Link } from 'react-router-dom'; // Added Link
+import { getUserEmail } from '../services/user'; // Removed deleteAccount
 
 import WaterTracker from '../components/WaterTracker';
 
 import { checkAchievements, Achievement } from '../services/achievements';
 import Achievements from '../components/Achievements';
 import Quote from '../components/Quote';
+import WaterCupVisual from '../components/WaterCupVisual';
 
 interface Profile {
   name: string;
@@ -28,6 +29,7 @@ const HomePage: React.FC = () => {
   const [earnedAchievements, setEarnedAchievements] = useState<Achievement[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null); // New state for user email
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,6 +46,10 @@ const HomePage: React.FC = () => {
 
           if (profileError) throw profileError;
           setProfile(profileData);
+
+          // Fetch user email
+          const email = await getUserEmail(user.id);
+          setUserEmail(email);
 
           const today = new Date();
           const todayStr = today.toISOString().split('T')[0];
@@ -120,29 +126,8 @@ const HomePage: React.FC = () => {
       );
     }
   };
-
-  const [theme, setTheme] = useState('light');
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-  };
-
-  useEffect(() => {
-    document.body.className = theme;
-  }, [theme]);
-
-  const handleDeleteAccount = async () => {
-    if (window.confirm('Are you sure you want to delete your account? This action is irreversible.')) {
-      try {
-        await deleteAccount();
-        alert('Account deleted successfully.');
-        signOut();
-      } catch (error: any) {
-        alert(`Failed to delete account: ${error.message}`);
-      }
-    }
-  };
+  
+  // handleDeleteAccount function removed
 
   if (loading) {
     return <LoadingPage />;
@@ -157,26 +142,42 @@ const HomePage: React.FC = () => {
   return (
     <div className="homepage-container">
       <header className="homepage-header">
-        <div style={{ flex: 1 }}></div>
+        <div className="header-left"></div>
         <h1>
           <img src="/nmn.png" alt="HydroSync logo" className="header-logo" />
-          HydroSync
+          Welcome to HydroSync!
         </h1>
-        <div style={{ flex: 1 }}></div>
-        <button onClick={signOut} className="logout-button">Logout</button>
+        <div className="header-right">
+        </div>
       </header>
 
       <main className="dashboard">
         <section className="daily-tracker section-card">
           <h2>Today's Progress</h2>
-          <p>Hello, {profile?.name}! Your goal is {profile?.daily_water_goal_oz} oz.</p>
+          <p>Hello, {profile?.name}!</p>
+          <div className="progress-summary">
+            <p>Goal: <span className="highlight">{profile?.daily_water_goal_oz} oz</span></p>
+            <p>Current: <span className="highlight">{dailyIntake} oz</span></p>
+            {profile && dailyIntake < profile.daily_water_goal_oz && (
+              <p>Remaining: <span className="highlight">{profile.daily_water_goal_oz - dailyIntake} oz</span></p>
+            )}
+            {profile && dailyIntake < profile.daily_water_goal_oz && (
+              <p>Just <span className="highlight">{Math.ceil((profile.daily_water_goal_oz - dailyIntake) / profile.bottle_size_oz)}</span> more bottle(s)!</p>
+            )}
+            {profile && dailyIntake >= profile.daily_water_goal_oz ? (
+              <p className="encouragement success">Goal achieved! Excellent hydration!</p>
+            ) : (
+              <p className="encouragement">Keep going, every sip counts!</p>
+            )}
+          </div>
           <div className="progress-bar-container">
             <div
               className="progress-bar-fill"
               style={{ width: `${Math.min(progressPercentage, 100)}%` }}
             ></div>
           </div>
-          <p>{dailyIntake} / {profile?.daily_water_goal_oz} oz</p>
+          <p className="progress-text">{dailyIntake} / {profile?.daily_water_goal_oz} oz</p>
+          <WaterCupVisual progressPercentage={progressPercentage} />
           <div className="add-water-controls">
             <input
               type="number"
@@ -190,28 +191,36 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        <section className="weekly-progress section-card">
-          <h2>Weekly Progress</h2>
-          <WeeklyChart />
-        </section>
+        <div className="secondary-content">
+          <section className="weekly-progress section-card">
+            <h2>Weekly Progress</h2>
+            <WeeklyChart />
+          </section>
 
-        <section className="quote-section">
-          <Quote />
-        </section>
-        
-        <section className="achievements-section section-card">
-          <Achievements earnedAchievements={earnedAchievements} />
-        </section>
+          <section className="achievements-section section-card">
+            <h2>Achievements</h2>
+            <Achievements earnedAchievements={earnedAchievements} />
+          </section>
 
-        <section className="settings-section section-card">
-          <h2>Settings</h2>
-          <button onClick={toggleTheme} className="theme-toggle-button">
-            {theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-          </button>
-          <button onClick={handleDeleteAccount} className="delete-account-button">Delete Account</button>
-        </section>
+          <section className="quote-section section-card">
+            <h2>Daily Wisdom</h2>
+            <Quote />
+          </section>
+
+          <section className="settings-section section-card">
+            <h2>Settings</h2>
+            {userEmail && <p>Account Email: <strong>{userEmail}</strong></p>}
+            {/* Delete Account button removed */}
+            <button onClick={signOut} className="logout-button">Logout</button>
+          </section>
+        </div>
       </main>
       <WaterTracker bottles={addedBottles} />
+
+      <footer className="homepage-footer">
+        <p>&copy; 2023 Hydrosync. All rights reserved.</p>
+        <p><Link to="/privacy-policy" className="privacy-policy-link">Privacy Policy</Link></p>
+      </footer>
     </div>
   );
 };

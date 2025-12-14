@@ -15,7 +15,7 @@
 .login-header {
   text-align: center;
   margin-bottom: 20px;
-  color: #007bff;
+  color: #6f96c0;
   max-width: 500px;
   width: 100%;
   box-sizing: border-box;
@@ -33,8 +33,9 @@
 .header-logo {
   height: 50px;
   margin-right: 15px;
-  border: 2px solid #007bff;
+  border: 2px solid hsl(211, 100%, 50%);
   border-radius: 50%;
+  background-color: hsl(211, 100%, 50%); /* Added to fill the background */
 }
 
 .auth-box {
@@ -64,7 +65,7 @@
   margin-bottom: 8px;
   color: #555;
   font-weight: bold;
-  max-width: 100px;
+  max-width: 200px;
 }
 
 .input-group input[type="email"],
@@ -88,7 +89,7 @@
 .auth-box button {
   width: 100%;
   padding: 12px;
-  background-color: #007bff;
+  background-color: hsl(211, 100%, 50%);
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -98,7 +99,7 @@
 }
 
 .auth-box button:hover {
-  background-color: #0056b3;
+  background-color:hsl(211, 100%, 50%);
 }
 
 .auth-box button:disabled {

@@ -49,6 +49,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const signUp = async (email: string, password: string) => {
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({ email, password });
+
+    if (!error && data.user) {
+      // If user creation in auth is successful, insert into user_emails table
+      const { error: insertError } = await supabase
+        .from('user_emails')
+        .insert([{ id: data.user.id, email: data.user.email }]);
+
+      if (insertError) {
+        console.error('Error inserting user email into user_emails table:', insertError);
+        // Optionally, handle this error more gracefully, maybe by deleting the auth user
+        // if the email insertion fails to prevent orphaned auth entries.
+        // For now, we'll just return the insert error.
+        setLoading(false);
+        return { user: null, error: insertError };
+      }
+    }
+
     setLoading(false);
     return { user: data.user, error };
   };
