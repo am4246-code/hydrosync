@@ -33,7 +33,7 @@ const LoginPage: React.FC = () => {
         hasLowercase: /[a-z]/.test(password), // At least one lowercase letter
         hasUppercase: /[A-Z]/.test(password), // At least one uppercase letter
         hasDigit: /[0-9]/.test(password), // At least one digit
-        hasSymbol: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password), // At least one symbol
+        hasSymbol: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password), // At least one symbol
       });
     }
   }, [password, isLogin]); // Re-run effect when password or isLogin changes
