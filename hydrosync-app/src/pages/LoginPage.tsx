@@ -11,6 +11,8 @@ const LoginPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null); // State to display authentication errors
 
   // State to track if password meets various criteria for sign-up
+  // This client-side validation provides immediate feedback to the user and improves UX.
+  // However, server-side validation (handled by Supabase Auth) is the ultimate security measure.
   const [passwordCriteria, setPasswordCriteria] = useState({
     minLength: false,
     hasLowercase: false,
@@ -27,7 +29,7 @@ const LoginPage: React.FC = () => {
     // Only perform validation if in sign-up mode
     if (!isLogin) {
       setPasswordCriteria({
-        minLength: password.length >= 6, // Minimum 6 characters
+        minLength: password.length >= 6, // Minimum 6 characters (as per Supabase policy)
         hasLowercase: /[a-z]/.test(password), // At least one lowercase letter
         hasUppercase: /[A-Z]/.test(password), // At least one uppercase letter
         hasDigit: /[0-9]/.test(password), // At least one digit
@@ -48,11 +50,12 @@ const LoginPage: React.FC = () => {
     try {
       if (isLogin) {
         // Attempt to sign in
+        // Supabase securely handles password verification using hashed credentials.
         const { error } = await signIn(email, password);
         if (error) throw error; // If error, throw it to be caught
       } else {
         // Sign Up flow
-        // Prevent sign-up if password does not meet requirements
+        // Client-side check to prevent unnecessary server requests if password is clearly invalid.
         if (!isPasswordValid) {
           setLoading(false);
           setError('Password does not meet all requirements.');
@@ -60,17 +63,21 @@ const LoginPage: React.FC = () => {
         }
 
         // Attempt to sign up
+        // Password is sent to Supabase Auth, where it is securely hashed and stored.
+        // The plain-text password is never stored or exposed.
         const { error } = await signUp(email, password);
         if (error) {
           // Check for specific Supabase error message for duplicate email
           if (error.message.includes('User already registered')) {
             setError('An account with this email already exists. Please login or use a different email.');
           } else {
-            throw error; // Throw other errors to be caught
+            // General authentication error from Supabase
+            setError(`Authentication error: ${error.message}`);
           }
         } else {
           // Successful sign up: redirect to loading screen
-          // The loading screen will then handle redirection to the survey page
+          // This flow helps maintain a good user experience by confirming account creation
+          // before proceeding to onboarding steps like the survey.
           navigate('/loading');
         }
       }
@@ -81,9 +88,10 @@ const LoginPage: React.FC = () => {
       } else if (err.message === 'Email not confirmed') {
         setError('Please confirm your email address before logging in.');
       } else {
-        setError(err.message); // Display generic error message
+        setError(err.message); // Display generic error message for unexpected issues
       }
-    } finally {
+    }
+    finally {
       setLoading(false); // Reset loading state
     }
   };
@@ -119,7 +127,7 @@ const LoginPage: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {/* Password Requirements: Visible only in sign-up mode */}
+            {/* Password Requirements: Visible only in sign-up mode for user guidance */}
             {!isLogin && (
               <div className="password-requirements">
                 <p className={passwordCriteria.minLength ? 'valid' : 'invalid'}>

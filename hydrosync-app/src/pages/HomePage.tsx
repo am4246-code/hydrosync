@@ -32,6 +32,9 @@ const HomePage: React.FC = () => {
   const navigate = useNavigate(); // Hook for programmatic navigation
 
   // Effect to fetch initial user data (profile, intake, achievements, email)
+  // Security & Compliance Note: Data fetching relies on Supabase Row Level Security (RLS)
+  // configured on 'profiles' and 'daily_intake' tables to ensure users can only access their own data.
+  // The getUserEmail function also inherently leverages RLS on the 'user_emails' table.
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
@@ -110,6 +113,9 @@ const HomePage: React.FC = () => {
   }, [addedBottles]); // Re-run effect when addedBottles changes
 
   // Handler for adding water intake
+  // Security & Compliance: Data insertion/update into 'daily_intake' is protected by RLS
+  // ensuring users can only modify their own records. The 'onConflict' clause handles
+  // updates for existing daily entries, maintaining data integrity.
   const handleAddWater = async () => {
     if (!bottlesToAdd || !profile) return; // Prevent action if no bottles to add or profile is missing
 
@@ -125,6 +131,7 @@ const HomePage: React.FC = () => {
     setSetAddedBottles(Number(bottlesToAdd)); // Trigger water visual animation
 
     // Upsert (insert or update) the daily intake in Supabase
+    // RLS policies on 'daily_intake' table validate user_id against auth.uid()
     const today = new Date().toISOString().split('T')[0];
     if (user) {
       await supabase.from('daily_intake').upsert(
@@ -138,7 +145,11 @@ const HomePage: React.FC = () => {
     }
   };
   
-  // handleDeleteAccount function removed as per user request
+  // handleDeleteAccount function removed as per user request.
+  // Security Note: Deleting user accounts involves sensitive operations that typically require
+  // backend services (like Edge Functions) with elevated permissions (service role keys).
+  // Comprehensive user data cleanup across all associated tables is crucial for data compliance (e.g., GDPR, CCPA).
+  // The client-side application no longer directly supports user self-deletion.
 
   // Display loading page if data is still being fetched
   if (loading) {

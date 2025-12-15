@@ -12,7 +12,7 @@ import './App.css';
 function App() {
   return (
     <Routes>
-      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} /> {/* Security & Compliance: Route for displaying Privacy Policy */}
       <Route path="/loading" element={<LoadingPage />} /> {/* New route for LoadingPage */}
       <Route element={<AuthWrapper />}>
         <Route path="/login" element={<LoginPage />} />
